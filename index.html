@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem RPH Al Faqeh Kidz Villa Putra - Edisi Guru 2026</title>
+
+<!-- Memasukkan pustaka html2pdf.js untuk penukaran HTML ke fail PDF secara terus -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+/* --- PRESCHOOL LIGHT THEME 2026 --- */
+:root {
+    --bg-main: #f4f7f6;           /* Warna pastel lembut */
+    --bg-card: #ffffff;           /* Putih bersih untuk kad */
+    --bg-input: #eef2f5;          /* Input box lembut */
+    --text-primary: #2c3e50;      /* Teks gelap lembut */
+    --text-secondary: #7f8c8d;    /* Teks sekunder */
+    --primary-color: #ff7675;     /* Warna utama ceria */
+    --share-color: #0984e3;       /* Warna biru untuk fungsi simpan data */
+    --shadow-floating: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.02);
+    --border-radius-lg: 24px;
+    --border-radius-sm: 12px;
+}
+
+body {
+    font-family: 'Quicksand', 'SF Pro Display', -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px 160px 15px; /* Ditambah padding bawah untuk elak terlindung dek menu bar */
+}
+
+/* --- PROFILE SELECTION SCREEN --- */
+#profileScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #ffffff 0%, #e8f0fe 100%);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.profile-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    letter-spacing: -0.5px;
+    text-align: center;
+}
+
+.profile-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1000px;
+    padding: 20px;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 120px; /* Saiz tetap di mobile */
+}
+
+.profile-card:hover {
+    transform: scale(1.1);
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom: 12px;
+    border: 4px solid #ffffff;
+    transition: box-shadow 0.3s;
+}
+
+.profile-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #576574;
+    text-align: center;
+}
+
+.p-farhanna { background: linear-gradient(135deg, #ff9ff3, #feca57); }
+.p-hanis { background: linear-gradient(135deg, #ff6b6b, #ff8787); }
+.p-mimi { background: linear-gradient(135deg, #48dbfb, #1dd1a1); }
+.p-balqis { background: linear-gradient(135deg, #9c88ff, #f53b57); }
+.p-syaza { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+
+#mainApp {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.main-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.welcome-banner {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1dd1a1;
+    background: rgba(29, 209, 161, 0.1);
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: table;
+    margin: 0 auto 30px auto;
+}
+
+.action-buttons-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 35px;
+    padding: 0 10px;
+}
+
+.btn-trigger-jadual {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 40px;
+    box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2);
+    width: 100%;
+    max-width: 380px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-trigger-rph {
+    background: linear-gradient(135deg, #a8ff78, #78ffd6);
+    color: #2c3e50;
+    border: none;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 40px;
+    box-shadow: 0 10px 20px rgba(120, 255, 214, 0.3);
+    width: 100%;
+    max-width: 380px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* --- FLOATED OVERLAY SCREEN PANEL --- */
+.schedule-overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(44, 62, 80, 0.5); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 10px; /* Jarak selamat di skrin mobile */
+    box-sizing: border-box;
+}
+
+.schedule-overlay-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.wide-schedule-panel {
+    background: #ffffff;
+    width: 100%; 
+    max-width: 1300px; 
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateY(30px);
+    transition: all 0.3s ease;
+}
+
+/* --- OVERLAY PAPARAN RPH (BESAR TAPI TAK PENUH SKRIN) --- */
+.rph-display-panel {
+    background: #ffffff;
+    width: 100%; 
+    max-width: 1150px;
+    height: 90vh;
+    overflow-y: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+    padding: 20px;
+    box-sizing: border-box;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+
+.schedule-overlay-backdrop.active .wide-schedule-panel,
+.schedule-overlay-backdrop.active .rph-display-panel {
+    transform: translateY(0) scale(1);
+}
+
+/* --- MINI FLOATED OVERLAY (CHOICE MENU) --- */
+.mini-overlay-panel {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    padding: 25px 20px;
+    box-sizing: border-box;
+    text-align: center;
+    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.wide-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f2f6;
+    padding-bottom: 12px;
+}
+
+/* Ubahsuai Khas Header untuk RPH Besar - Susun butang di sebelah tajuk */
+.rph-besar-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f2f6;
+    padding-bottom: 15px;
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.header-buttons-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.wide-panel-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wide-panel-close {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 5px;
+}
+
+.horizontal-schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.schedule-input-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--border-radius-sm);
+    padding: 15px;
+}
+
+.slot-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: block;
+    text-transform: uppercase;
+}
+
+.input-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wide-panel-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 2px solid #f1f2f6;
+    padding-top: 15px;
+}
+
+/* --- SEKSYEN SENARAI RPH TERSIMPAN --- */
+.saved-rph-section {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: var(--border-radius-sm);
+    padding: 15px;
+    margin-top: 25px;
+}
+
+.saved-rph-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rph-record-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column; /* Mesra mobile secara lalai */
+    gap: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+@media (min-width: 576px) {
+    .rph-record-card {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.rph-record-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* --- FLOATING MODERN CARD --- */
+.floating-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-floating);
+    margin-bottom: 25px;
+}
+
+/* --- TABLES & RESPONSIVE WRAPPER --- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 15px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    min-width: 800px;
+}
+
+th {
+    padding: 10px 12px;
+    text-align: left;
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+td {
+    background: var(--bg-card);
+    padding: 14px 12px;
+    font-size: 13px;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    vertical-align: top;
+}
+
+td:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.03);
+    border-top-left-radius: var(--border-radius-sm);
+    border-bottom-left-radius: var(--border-radius-sm);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+td:last-child {
+    border-right: 1px solid rgba(0, 0, 0, 0.03);
+    border-top-right-radius: var(--border-radius-sm);
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+
+.purple-header th { color: #8e44ad; }
+
+.yellow-row td {
+    background: linear-gradient(90deg, rgba(254, 202, 87, 0.15) 0%, rgba(254, 202, 87, 0.02) 100%) !important;
+    color: #f39c12;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    border: 1px solid rgba(254, 202, 87, 0.2);
+    padding: 10px !important;
+}
+
+input, select, textarea {
+    width: 100%;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 13px;
+    transition: all 0.25s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 118, 117, 0.1);
+}
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+/* --- FLOATED STICKY CONTROL BAR (RE-DESIGNED FOR MOBILE) --- */
+.floated-menu-bar {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 10px 15px;
+    border-radius: 30px;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    width: 90%;
+    max-width: 550px;
+    box-sizing: border-box;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button {
+    background: #ffffff;
+    color: var(--text-primary);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}
+
+button:hover {
+    background: #f4f7f6;
+    transform: translateY(-2px);
+}
+
+button.btn-primary {
+    background: var(--primary-color);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(255, 118, 117, 0.2);
+}
+
+button.btn-save {
+    background: var(--share-color);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(9, 132, 227, 0.2);
+}
+
+button.btn-cancel {
+    background: #d63031;
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(214, 48, 49, 0.2);
+}
+
+.dynamic-action-btn {
+    display: none;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+    .meta-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.meta-cell {
+    background: #f8fafc;
+    border: 1px solid rgba(0, 0, 0, 0.01);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+/* --- PENAMBAHAN CSS KHAS UNTUK GENERASI PDF AGAR FIT PAGE --- */
+.html2pdf-pdf-mode .floating-card {
+    box-shadow: none !important;
+    border: 1px solid #000000 !important;
+    background: #ffffff !important;
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    margin: 0 0 20px 0 !important;
+    padding: 15px !important;
+}
+
+.html2pdf-pdf-mode table {
+    min-width: 100% !important;
+}
+
+.html2pdf-pdf-mode input, 
+.html2pdf-pdf-mode textarea {
+    background: transparent !important;
+    border: none !important;
+    padding: 2px !important;
+    color: #000000 !important;
+    font-size: 12px !important;
+}
+
+/* --- PENAMBAHAN MEDIA QUERIES KHAS MOBILES (EXTRA CODES) --- */
+@media (max-width: 576px) {
+    .container {
+        padding-bottom: 220px;
+    }
+    .wide-schedule-panel, .rph-display-panel {
+        padding: 15px 10px;
+    }
+    .wide-panel-title {
+        font-size: 16px;
+    }
+    .rph-besar-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .header-left-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .header-buttons-group {
+        width: 100%;
+    }
+    .header-buttons-group button {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+    .floated-menu-bar {
+        padding: 8px 10px;
+        border-radius: 20px;
+        bottom: 10px;
+    }
+    button {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+    .avatar {
+        width: 75px;
+        height: 75px;
+        font-size: 28px;
+    }
+    .profile-card {
+        width: 95px;
+    }
+    .profile-title {
+        font-size: 22px;
+    }
+}
+
+@media print {
+    body { background-color: #fff; color: #000; padding: 0; }
+    #profileScreen, .floated-menu-bar, .schedule-overlay-backdrop, .action-buttons-group, .main-title, .welcome-banner { display: none !important; }
+    .print-block { background: #fff !important; color: #000 !important; border: none !important; box-shadow: none !important; page-break-after: always; padding: 0; margin: 0 0 30px 0; }
+    table { border-spacing: 0; min-width: 100% !important; }
+    td { background: transparent !important; color: #000 !important; border: 1px solid #000 !important; }
+    .table-responsive { overflow-x: visible !important; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- GATED PROFILE SELECTION SCREEN -->
+<div id="profileScreen">
+    <div class="profile-title">Choose your profile</div>
+    <div class="profile-grid">
+        <div class="profile-card" onclick="selectProfile('Cikgu Farhanna')">
+            <div class="avatar p-farhanna">F</div>
+            <div class="profile-name">Cikgu Farhanna</div>
+        </div>
+        <div class="profile-card" onclick="selectProfile('Cikgu Hanis')">
+            <div class="avatar p-hanis">H</div>
+            <div class="profile-name">Cikgu Hanis</div>
+        </div>
+        <div class="profile-card" onclick="selectProfile('Cikgu Mimi')">
+            <div class="avatar p-mimi">M</div>
+            <div class="profile-name">Cikgu Mimi</div>
+        </div>
+        <div class="profile-card" onclick="selectProfile('Cikgu Balqis')">
+            <div class="avatar p-balqis">B</div>
+            <div class="profile-name">Cikgu Balqis</div>
+        </div>
+        <div class="profile-card" onclick="selectProfile('Cikgu Syaza')">
+            <div class="avatar p-syaza">S</div>
+            <div class="profile-name">Cikgu Syaza</div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN HUB SYSTEM CONTAINER -->
+<div id="mainApp" class="container">
+
+    <div class="main-title">SISTEM RPH Al Faqeh Villa Putra</div>
+    <div id="userWelcome" class="welcome-banner">Selamat Datang!</div>
+
+    <div class="action-buttons-group">
+        <button class="btn-trigger-jadual" onclick="openScheduleOverlay()">📅 Urus Senarai Jadual Masa & Subjek</button>
+        <button class="btn-trigger-rph" onclick="openRPHOverlay()">📝 Urus Rancangan Pengajaran Harian (RPH)</button>
+    </div>
+
+    <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK -->
+    <div id="scheduleOverlay" class="schedule-overlay-backdrop">
+        <div class="wide-schedule-panel">
+            <div class="wide-panel-header">
+                <div class="wide-panel-title">🗓️ Tetapan Jadual & Subjek Mingguan</div>
+                <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
+            </div>
+            
+            <div class="horizontal-schedule-grid">
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 1</span>
+                    <div class="input-pair"><input id="masa1" value="8.00-8.30"><input id="subjek1" value="Aktiviti Fizikal"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 2</span>
+                    <div class="input-pair"><input id="masa2" value="8.30-9.00"><input id="subjek2" value="Perbualan Awal"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 3</span>
+                    <div class="input-pair"><input id="masa3" value="9.00-9.30"><input id="subjek3" value="Bahasa Melayu"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 4</span>
+                    <div class="input-pair"><input id="masa4" value="10.00-10.20"><input id="subjek4" value="Pend. Islam/Dhuha"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 5</span>
+                    <div class="input-pair"><input id="masa5" value="10.20-10.50"><input id="subjek5" value="Matematik Awal"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 6</span>
+                    <div class="input-pair"><input id="masa6" value="10.50-11.20"><input id="subjek6" value="Aktiviti Pembelajaran"></div>
+                </div>
+                <div class="schedule-input-card">
+                    <span class="slot-label">Slot 7</span>
+                    <div class="input-pair"><input id="masa7" value="11.20-11.50"><input id="subjek7" value="Aktiviti Pembelajaran"></div>
+                </div>
+            </div>
+            <div class="wide-panel-actions">
+                <button class="btn-primary" onclick="updateJadual()">Kemas Kini Paparan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA -->
+    <div id="rphOverlay" class="schedule-overlay-backdrop">
+        <div class="wide-schedule-panel" style="max-width: 1100px;">
+            <div class="wide-panel-header">
+                <div class="wide-panel-title">📚 Panel Pengurusan Kandungan RPH</div>
+                <div class="wide-panel-close" onclick="closeRPHOverlay()">&times;</div>
+            </div>
+            <div class="saved-rph-section">
+                <h4 class="saved-rph-title">📋 Senarai RPH Harian</h4>
+                <div id="savedRPHList">
+                    <p style="font-size: 13px; color: var(--text-secondary); margin: 0;" id="noRphText">Tiada rekod RPH tersimpan dikesan.</p>
+                </div>
+            </div>
+            <div class="wide-panel-actions" style="margin-top: 30px;">
+                <button onclick="closeRPHOverlay()">Tutup Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MINI FLOATED OVERLAY: PILIHAN JENIS / HARI -->
+    <div id="pilihanLihatOverlay" class="schedule-overlay-backdrop" style="z-index: 30000;">
+        <div class="mini-overlay-panel">
+            <h3 style="margin-top:0; font-size:18px; color:var(--text-primary);">Pilih Jenis Paparan</h3>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">Sila pilih jenis RPH yang ingin disemak.</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-save" style="width:100%; padding:12px;" onclick="bukaRphBesarOverlay('Semua')">📄 Lihat Penuh (Seminggu)</button>
+                <button class="btn-primary" style="width:100%; padding:12px; background:linear-gradient(135deg, #74b9ff, #0984e3);" onclick="bukaPilihanHariDalaman()">📆 Mengikut Hari tertentu</button>
+            </div>
+            <div id="senaraiHariDalaman" style="display:none; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:15px; padding-top:15px; border-top:1px dashed #cbd5e1;">
+                <button style="padding:8px 5px; font-size:12px;" onclick="bukaRphBesarOverlay('Isnin')">Isnin</button>
+                <button style="padding:8px 5px; font-size:12px;" onclick="bukaRphBesarOverlay('Selasa')">Selasa</button>
+                <button style="padding:8px 5px; font-size:12px;" onclick="bukaRphBesarOverlay('Rabu')">Rabu</button>
+                <button style="padding:8px 5px; font-size:12px;" onclick="bukaRphBesarOverlay('Khamis')">Khamis</button>
+                <button style="padding:8px 5px; font-size:12px;" onclick="bukaRphBesarOverlay('Jumaat')">Jumaat</button>
+            </div>
+            <button style="margin-top:20px; background:none; border:none; color:var(--text-secondary); font-size:12px; text-decoration:underline;" onclick="tutupPilihanLihatOverlay()">Batal</button>
+        </div>
+    </div>
+
+    <!-- 4. FLOATED OVERLAY JADUAL BESAR -->
+    <div id="rphBesarOverlay" class="schedule-overlay-backdrop" style="z-index: 40000;">
+        <div class="rph-display-panel">
+            
+            <div class="rph-besar-header">
+                <div class="header-left-group">
+                    <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
+                    <div class="header-buttons-group">
+                        <button class="btn-primary" style="background: linear-gradient(135deg, #25d366, #128c7e);" id="btnEksportPDF" onclick="kongsiRPHKeWhatsAppAtauLain()">🔗 Kongsi RPH (PDF)</button>
+                        <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan</button>
+                    </div>
+                </div>
+                <div class="wide-panel-close" onclick="tutupRphBesarOverlay()">&times;</div>
+            </div>
+            
+            <div id="floatedRphInjectArea"></div>
+
+            <div class="wide-panel-actions" style="margin-top:25px;">
+                <button onclick="tutupRphBesarOverlay()">Tutup Skrin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DRAF UTAMA KELUAR DI BELAKANG APABILA KLIK 'JANA SEMINGGU' BARU -->
+    <div id="weekRPH"></div>
+
+    <!-- FLOATED CONTROL BAR -->
+    <div class="floated-menu-bar">
+        <button onclick="changeProfileBtn()">Tukar Profil</button>
+        <button class="btn-primary" id="btnJana" onclick="generateWeek()">Jana RPH Seminggu</button>
+        <button class="btn-save dynamic-action-btn" id="btnSimpan" onclick="simpanDanBukaUrusRPH()">💾 Simpan Data RPH</button>
+        <button class="btn-cancel dynamic-action-btn" id="btnBatal" onclick="cancelRPHGeneration()">❌ Batal Janaan</button>
+    </div>
+
+</div>
+
+<script>
+let susunanJadual = [
+    { id: 1, masa: "8.00-8.30", subjek: "Aktiviti Fizikal" },
+    { id: 2, masa: "8.30-9.00", subjek: "Perbualan Awal" },
+    { id: 3, masa: "9.00-9.30", subjek: "Bahasa Melayu" },
+    { id: 4, masa: "10.00-10.20", subjek: "Pend. Islam/Dhuha" },
+    { id: 5, masa: "10.20-10.50", subjek: "Matematik Awal" },
+    { id: 6, masa: "10.50-11.20", subjek: "Aktiviti Pembelajaran" },
+    { id: 7, masa: "11.20-11.50", subjek: "Aktiviti Pembelajaran" }
+];
+
+let semasaGuru = "Guru";
+let modPaparanSemasa = "Semua";
+
+window.onload = function() {
+    const savedProfile = localStorage.getItem("semasaGuru");
+    if (savedProfile) { selectProfile(savedProfile, true); }
+
+    const savedJadual = localStorage.getItem("susunanJadual");
+    if (savedJadual) {
+        susunanJadual = JSON.parse(savedJadual);
+        for(let i=1; i<=7; i++){
+            document.getElementById("masa"+i).value = susunanJadual[i-1].masa;
+            document.getElementById("subjek"+i).value = susunanJadual[i-1].subjek;
+        }
+    }
+
+    /* 
+      PERBAIKAN UTAMA: 
+      Kod pembacaan automatik rphHTML di sini telah DIBUANG sepenuhnya.
+      Draf utama di belakang skrin tidak akan terkeluar secara automatik semasa refresh page.
+      Ia hanya akan keluar apabila butang 'Jana RPH Seminggu' ditekan.
+    */
+    
+    kemaskiniSenaraiOverlayRPH();
+};
+
+function openScheduleOverlay() { document.getElementById("scheduleOverlay").classList.add("active"); }
+function closeScheduleOverlay() { document.getElementById("scheduleOverlay").classList.remove("active"); }
+function openRPHOverlay() { 
+    kemaskiniSenaraiOverlayRPH();
+    document.getElementById("rphOverlay").classList.add("active"); 
+}
+function closeRPHOverlay() { document.getElementById("rphOverlay").classList.remove("active"); }
+
+function bukaPilihanLihatOverlay() {
+    document.getElementById("senaraiHariDalaman").style.display = "none";
+    document.getElementById("pilihanLihatOverlay").classList.add("active");
+}
+function tutupPilihanLihatOverlay() { document.getElementById("pilihanLihatOverlay").classList.remove("active"); }
+function bukaPilihanHariDalaman() {
+    const sHari = document.getElementById("senaraiHariDalaman");
+    sHari.style.display = (sHari.style.display === "none") ? "grid" : "none";
+}
+
+function bukaRphBesarOverlay(mod) {
+    modPaparanSemasa = mod;
+    tutupPilihanLihatOverlay();
+    closeRPHOverlay(); 
+    
+    const savedRPHContent = localStorage.getItem("rphHTML");
+    if (!savedRPHContent) return;
+
+    const titleHeader = document.getElementById("rphBesarHeaderTitle");
+    titleHeader.innerText = mod === 'Semua' ? "📄 RPH Penuh Mingguan" : `📆 RPH Hari ${mod}`;
+
+    const injectArea = document.getElementById("floatedRphInjectArea");
+    injectArea.innerHTML = savedRPHContent;
+    
+    const tables = injectArea.querySelectorAll('table');
+    tables.forEach(table => {
+        if (!table.parentElement.classList.contains('table-responsive')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+
+    const inputs = injectArea.querySelectorAll('.save-val');
+    inputs.forEach(input => {
+        const savedVal = localStorage.getItem(input.id);
+        if (savedVal) { input.value = savedVal; }
+    });
+
+    const cards = injectArea.querySelectorAll('.print-block');
+    if (mod === 'Semua') {
+        cards.forEach(card => card.style.display = "block");
+    } else {
+        cards.forEach(card => {
+            if (card.getAttribute('data-day') === mod) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    document.getElementById("rphBesarOverlay").classList.add("active");
+}
+
+function tutupRphBesarOverlay() {
+    document.getElementById("rphBesarOverlay").classList.remove("active");
+}
+
+function simpanDataDariFloatedOverlay() {
+    const injectArea = document.getElementById("floatedRphInjectArea");
+    const inputs = injectArea.querySelectorAll('.save-val');
+    
+    inputs.forEach(input => {
+        localStorage.setItem(input.id, input.value);
+    });
+
+    const savedRPHContent = localStorage.getItem("rphHTML");
+    if (savedRPHContent) {
+        document.getElementById("weekRPH").innerHTML = savedRPHContent;
+        wrapTablesResponsively();
+        restoreTextareaValues();
+    }
+    
+    alert("Perubahan data RPH berjaya disimpan secara terus! 💾");
+}
+
+function selectProfile(teacherName, isAuto = false) {
+    semasaGuru = teacherName;
+    localStorage.setItem("semasaGuru", teacherName); 
+    const pScreen = document.getElementById("profileScreen");
+    const mainApp = document.getElementById("mainApp");
+    if(isAuto) {
+        pScreen.style.display = "none";
+        mainApp.style.display = "block";
+        mainApp.style.opacity = "1";
+    } else {
+        pScreen.style.opacity = "0";
+        setTimeout(() => {
+            pScreen.style.visibility = "hidden";
+            mainApp.style.display = "block";
+            setTimeout(() => { mainApp.style.opacity = "1"; }, 50);
+        }, 500);
+    }
+    document.getElementById("userWelcome").innerHTML = "✨ Log Masuk Sebagai: <strong>" + teacherName + "</strong>";
+}
+
+function changeProfileBtn() {
+    localStorage.removeItem("semasaGuru"); 
+    location.reload(); 
+}
+
+function updateJadual(){
+    for(let i=1; i<=7; i++){
+        susunanJadual[i-1].masa = document.getElementById("masa"+i).value;
+        susunanJadual[i-1].subjek = document.getElementById("subjek"+i).value;
+    }
+    localStorage.setItem("susunanJadual", JSON.stringify(susunanJadual));
+    closeScheduleOverlay();
+    alert("Jadual disimpan!");
+}
+
+function generateWeek(){
+    let days = ["Isnin","Selasa","Rabu","Khamis","Jumaat"];
+    let content = "";
+    for(let d=0; d<days.length; d++){
+        content += `
+        <div class="floating-card print-block" data-day="${days[d]}" id="rph-card-${days[d]}">
+            <div class="main-title" style="font-size: 20px; text-align: left; margin-bottom: 20px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${days[d]})</div>
+            <div class="meta-grid">
+                <div class="meta-cell"><span class="meta-label">Minggu</span><input type="text" class="save-val" id="mw-${d}" placeholder="Masukkan Minggu"></div>
+                <div class="meta-cell"><span class="meta-label">Hari</span><input type="text" value="${days[d]}" readonly style="font-weight:700; color:var(--primary-color);"></div>
+                <div class="meta-cell"><span class="meta-label">Kehadiran</span><input type="text" class="save-val" id="kh-${d}" placeholder="Cth: 24/25"></div>
+                <div class="meta-cell"><span class="meta-label">Tarikh</span><input type="date" class="save-val" id="tr-${d}"></div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr class="purple-header">
+                            <th style="width: 20%;">MASA / TUNJANG</th>
+                            <th style="width: 20%;">STANDARD PEMBELAJARAN</th>
+                            <th style="width: 20%;">OBJEKTIF PEMBELAJARAN</th>
+                            <th style="width: 25%;">AKTIVITI</th>
+                            <th style="width: 15%;">ABM / CATATAN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[1,2,3,4,5,6,7].map(num => `
+                        <tr>
+                            <td class="slot-id-${num}">${susunanJadual[num-1].masa}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${susunanJadual[num-1].subjek}</span></td>
+                            <td><textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
+                            <td><textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
+                            <td><textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
+                            <td><textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
+                        </tr>
+                        ${num === 3 ? '<tr class="yellow-row"><td colspan="5">REHAT</td></tr>' : ''}
+                        `).join('')}
+                        <tr class="yellow-row"><td colspan="5">PENUTUP</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+    document.getElementById("weekRPH").innerHTML = content;
+    localStorage.setItem("rphHTML", content); 
+    attachSaveListeners(); 
+    toggleDynamicButtons(true);
+    document.getElementById("weekRPH").scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleDynamicButtons(show) {
+    const displayStyle = show ? "inline-block" : "none";
+    document.getElementById("btnSimpan").style.display = displayStyle;
+    document.getElementById("btnBatal").style.display = displayStyle;
+}
+
+function simpanSahaja() {
+    const inputs = document.querySelectorAll('.save-val');
+    inputs.forEach(input => {
+        localStorage.setItem(input.id, input.value);
+    });
+    const rphContent = document.getElementById("weekRPH").innerHTML;
+    localStorage.setItem("rphHTML", rphContent);
+}
+
+function simpanDanBukaUrusRPH() {
+    simpanSahaja(); 
+    
+    const tarikhMula = document.getElementById("tr-0") ? document.getElementById("tr-0").value : "";
+    const tarikhAkhir = document.getElementById("tr-4") ? document.getElementById("tr-4").value : "";
+    const mingguInfo = document.getElementById("mw-0") ? document.getElementById("mw-0").value : "Semasa";
+
+    if(tarikhMula || tarikhAkhir) {
+        localStorage.setItem("rph_saved_meta", JSON.stringify({
+            minggu: mingguInfo,
+            mula: tarikhMula,
+            akhir: tarikhAkhir,
+            guru: semasaGuru
+        }));
+    }
+
+    document.getElementById("weekRPH").innerHTML = "";
+    toggleDynamicButtons(false);
+
+    openRPHOverlay();
+    alert("Data RPH berjaya disimpan secara berpusat! 💾");
+}
+
+function kemaskiniSenaraiOverlayRPH() {
+    const listContainer = document.getElementById("savedRPHList");
+    const hasHTML = localStorage.getItem("rphHTML");
+    const savedMeta = localStorage.getItem("rph_saved_meta");
+
+    if (hasHTML && savedMeta) {
+        const meta = JSON.parse(savedMeta);
+        const tMula = meta.mula ? meta.mula : "[Belum Diisi]";
+        const tAkhir = meta.akhir ? meta.akhir : "[Belum Diisi]";
+        
+        listContainer.innerHTML = `
+            <div class="rph-record-card">
+                <div class="rph-record-info">
+                    <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${meta.minggu} (${meta.guru})</span>
+                    <span style="font-size: 13px; color: #e74c3c; font-weight:600;">📅 ${tMula} hingga ${tAkhir}</span>
+                </div>
+                <div>
+                    <button class="btn-primary" style="padding: 8px 15px; font-size:12px; width:100%;" onclick="bukaPilihanLihatOverlay()">Lihat / Sunting</button>
+                </div>
+            </div>
+        `;
+    } else {
+        listContainer.innerHTML = `<p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Tiada rekod RPH tersimpan dikesan.</p>`;
+    }
+}
+
+function cancelRPHGeneration() {
+    if(confirm("Adakah anda pasti untuk membatalkan draf janaan RPH minggu ini pada skrin utama? Perubahan teks yang belum disimpan di panel pusat akan dibersihkan.")) {
+        document.getElementById("weekRPH").innerHTML = "";
+        toggleDynamicButtons(false);
+        kemaskiniSenaraiOverlayRPH();
+        alert("Draf janaan pada skrin utama telah dibersihkan. 🧹");
+    }
+}
+
+function attachSaveListeners() {
+    const inputs = document.querySelectorAll('.save-val');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            localStorage.setItem(input.id, input.value);
+        });
+    });
+}
+
+function restoreTextareaValues() {
+    const inputs = document.querySelectorAll('.save-val');
+    inputs.forEach(input => {
+        const savedVal = localStorage.getItem(input.id);
+        if (savedVal) { input.value = savedVal; }
+    });
+    attachSaveListeners(); 
+}
+
+function wrapTablesResponsively() {
+    const mainArea = document.getElementById("weekRPH");
+    const tables = mainArea.querySelectorAll('table');
+    tables.forEach(table => {
+        if (!table.parentElement.classList.contains('table-responsive')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+}
+
+function kongsiRPHKeWhatsAppAtauLain() {
+    const element = document.getElementById("floatedRphInjectArea");
+    const savedMeta = localStorage.getItem("rph_saved_meta");
+    let namaMinggu = "Semasa";
+    if (savedMeta) {
+        const meta = JSON.parse(savedMeta);
+        namaMinggu = meta.minggu ? "Minggu_" + meta.minggu : "Semasa";
+    }
+
+    const tajukFail = `RPH_${namaMinggu}_(${semasaGuru})_${modPaparanSemasa}.pdf`;
+
+    const opsi = {
+        margin:       [10, 10, 10, 10],
+        filename:     tajukFail,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
+        pagebreak:    { mode: ['css', 'legacy'] }
+    };
+
+    const butangShare = document.getElementById("btnEksportPDF");
+    const teksAsal = butangShare.innerText;
+    butangShare.innerText = "⏳ Memproses...";
+    butangShare.disabled = true;
+
+    html2pdf().set(opsi).from(element).outputPdf('blob').then((pdfBlob) => {
+        const fileRph = new File([pdfBlob], tajukFail, { type: 'application/pdf' });
+
+        if (navigator.canShare && navigator.canShare({ files: [fileRph] })) {
+            navigator.share({
+                files: [fileRph],
+                title: `Kongsian ${tajukFail}`,
+                text: `Berikut disertakan fail PDF untuk Rancangan Pengajaran Harian bagi paparan mod: ${modPaparanSemasa}.`
+            })
+            .then(() => {
+                butangShare.innerText = teksAsal;
+                butangShare.disabled = false;
+            })
+            .catch((ralatShare) => {
+                butangShare.innerText = teksAsal;
+                butangShare.disabled = false;
+                console.log("Perkongsian dibatalkan oleh guru.");
+            });
+        } else {
+            alert("Sistem perkongsian langsung tidak disokong pada pelayar ini.\nFail PDF akan dimuat turun secara automatik ke peranti anda.");
+            html2pdf().set(opsi).from(element).save().then(() => {
+                butangShare.innerText = teksAsal;
+                butangShare.disabled = false;
+            });
+        }
+    }).catch((ralatProses) => {
+        butangShare.innerText = teksAsal;
+        butangShare.disabled = false;
+        console.error("Ralat pemprosesan fail:", ralatProses);
+        alert("Gagal memproses fail perkongsian PDF.");
+    });
+}
+</script>
+
+</body>
+</html>
