@@ -372,6 +372,12 @@ body {
     gap: 8px;
 }
 
+.rph-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .rph-record-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -717,7 +723,7 @@ button.btn-cancel {
         <button class="btn-trigger-rph" onclick="openRPHOverlay()">📝 Urus Rancangan Pengajaran Harian (RPH)</button>
     </div>
 
-    <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK -->
+    <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK (DENGAN INTEGRASI HARI DARI KOD ASAL) -->
     <div id="scheduleOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel">
             <div class="wide-panel-header">
@@ -725,6 +731,19 @@ button.btn-cancel {
                 <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
             </div>
             
+            <!-- Bahagian Pilihan Hari Automatik dari Coding Lama -->
+            <div style="margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: var(--border-radius-sm); border: 1px solid #e2e8f0;">
+                <label style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; display: block;">Pilih Hari Untuk Diubahsuai:</label>
+                <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" style="max-width: 300px; background: #ffffff; border: 1px solid #cbd5e1;">
+                    <option value="Isnin">Isnin</option>
+                    <option value="Selasa">Selasa</option>
+                    <option value="Rabu">Rabu</option>
+                    <option value="Khamis">Khamis</option>
+                    <option value="Jumaat">Jumaat</option>
+                </select>
+                <span style="font-size: 12px; color: var(--text-secondary); margin-left: 10px; display: inline-block; vertical-align: middle;">*Sistem akan memuatkan jadual tadika secara automatik mengikut hari.</span>
+            </div>
+
             <div class="horizontal-schedule-grid">
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 1</span>
@@ -756,12 +775,12 @@ button.btn-cancel {
                 </div>
             </div>
             <div class="wide-panel-actions">
-                <button class="btn-primary" onclick="updateJadual()">Kemas Kini Paparan</button>
+                <button class="btn-primary" onclick="updateJadual()">Kemas Kini Hari Ini</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA -->
+    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA (KEKALKAN MASTER ARRAY) -->
     <div id="rphOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel" style="max-width: 1100px;">
             <div class="wide-panel-header">
@@ -770,7 +789,7 @@ button.btn-cancel {
             </div>
             <div class="saved-rph-section">
                 <h4 class="saved-rph-title">📋 Senarai RPH Harian</h4>
-                <div id="savedRPHList">
+                <div id="savedRPHList" class="rph-list-wrapper">
                     <p style="font-size: 13px; color: var(--text-secondary); margin: 0;" id="noRphText">Tiada rekod RPH tersimpan dikesan.</p>
                 </div>
             </div>
@@ -837,41 +856,46 @@ button.btn-cancel {
 </div>
 
 <script>
-let susunanJadual = [
-    { id: 1, masa: "8.00-8.30", subjek: "Aktiviti Fizikal" },
-    { id: 2, masa: "8.30-9.00", subjek: "Perbualan Awal" },
-    { id: 3, masa: "9.00-9.30", subjek: "Bahasa Melayu" },
-    { id: 4, masa: "10.00-10.20", subjek: "Pend. Islam/Dhuha" },
-    { id: 5, masa: "10.20-10.50", subjek: "Matematik Awal" },
-    { id: 6, masa: "10.50-11.20", subjek: "Aktiviti Pembelajaran" },
-    { id: 7, masa: "11.20-11.50", subjek: "Aktiviti Pembelajaran" }
-];
+// Master Data Pangkalan Jadual Asal dari Coding Lama
+let pangkalanJadualInduk = {
+    "Isnin":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
+    "Selasa":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
+    "Rabu":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","English"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Sains"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
+    "Khamis":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Matematik Awal"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Bahasa Melayu"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
+    "Jumaat":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Jawi"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Seni"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]]
+};
 
 let semasaGuru = "Guru";
 let modPaparanSemasa = "Semua";
+let idRphAktif = null;
 
 window.onload = function() {
     const savedProfile = localStorage.getItem("semasaGuru");
     if (savedProfile) { selectProfile(savedProfile, true); }
 
-    const savedJadual = localStorage.getItem("susunanJadual");
-    if (savedJadual) {
-        susunanJadual = JSON.parse(savedJadual);
-        for(let i=1; i<=7; i++){
-            document.getElementById("masa"+i).value = susunanJadual[i-1].masa;
-            document.getElementById("subjek"+i).value = susunanJadual[i-1].subjek;
-        }
+    // Membaca atau memuatkan storan jadual utama ke LocalStorage
+    const savedJadualInduk = localStorage.getItem("pangkalanJadualInduk");
+    if (savedJadualInduk) {
+        pangkalanJadualInduk = JSON.parse(savedJadualInduk);
+    } else {
+        localStorage.setItem("pangkalanJadualInduk", JSON.stringify(pangkalanJadualInduk));
     }
 
-    /* 
-      PERBAIKAN UTAMA: 
-      Kod pembacaan automatik rphHTML di sini telah DIBUANG sepenuhnya.
-      Draf utama di belakang skrin tidak akan terkeluar secara automatik semasa refresh page.
-      Ia hanya akan keluar apabila butang 'Jana RPH Seminggu' ditekan.
-    */
-    
+    // Panggil paparan input jadual berdasarkan hari default (Isnin)
+    loadJadualEditBerdasarkanHari();
     kemaskiniSenaraiOverlayRPH();
 };
+
+// Fungsi Memuatkan Data Input Masa & Subjek Berdasarkan Hari yang dipilih (Dari Kod Lama)
+function loadJadualEditBerdasarkanHari() {
+    let hariDipilih = document.getElementById("hariPilihanJadual").value;
+    let dataHari = pangkalanJadualInduk[hariDipilih];
+
+    for(let i = 1; i <= 7; i++) {
+        document.getElementById("masa" + i).value = dataHari[i-1][0];
+        document.getElementById("subjek" + i).value = dataHari[i-1][1];
+    }
+}
 
 function openScheduleOverlay() { document.getElementById("scheduleOverlay").classList.add("active"); }
 function closeScheduleOverlay() { document.getElementById("scheduleOverlay").classList.remove("active"); }
@@ -881,7 +905,8 @@ function openRPHOverlay() {
 }
 function closeRPHOverlay() { document.getElementById("rphOverlay").classList.remove("active"); }
 
-function bukaPilihanLihatOverlay() {
+function bukaPilihanLihatOverlay(id) {
+    idRphAktif = id;
     document.getElementById("senaraiHariDalaman").style.display = "none";
     document.getElementById("pilihanLihatOverlay").classList.add("active");
 }
@@ -895,15 +920,20 @@ function bukaRphBesarOverlay(mod) {
     modPaparanSemasa = mod;
     tutupPilihanLihatOverlay();
     closeRPHOverlay(); 
+
+    let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+    let rphDipilih = senaraiRph.find(item => item.id === idRphAktif);
     
-    const savedRPHContent = localStorage.getItem("rphHTML");
-    if (!savedRPHContent) return;
+    if (!rphDipilih) {
+        alert("Rekod RPH tidak ditemui.");
+        return;
+    }
 
     const titleHeader = document.getElementById("rphBesarHeaderTitle");
-    titleHeader.innerText = mod === 'Semua' ? "📄 RPH Penuh Mingguan" : `📆 RPH Hari ${mod}`;
+    titleHeader.innerText = mod === 'Semua' ? `📄 RPH Penuh Mingguan (M${rphDipilih.meta.minggu})` : `📆 RPH Hari ${mod}`;
 
     const injectArea = document.getElementById("floatedRphInjectArea");
-    injectArea.innerHTML = savedRPHContent;
+    injectArea.innerHTML = rphDipilih.htmlContent;
     
     const tables = injectArea.querySelectorAll('table');
     tables.forEach(table => {
@@ -917,8 +947,9 @@ function bukaRphBesarOverlay(mod) {
 
     const inputs = injectArea.querySelectorAll('.save-val');
     inputs.forEach(input => {
-        const savedVal = localStorage.getItem(input.id);
-        if (savedVal) { input.value = savedVal; }
+        if (rphDipilih.inputData && rphDipilih.inputData[input.id] !== undefined) {
+            input.value = rphDipilih.inputData[input.id];
+        }
     });
 
     const cards = injectArea.querySelectorAll('.print-block');
@@ -945,17 +976,27 @@ function simpanDataDariFloatedOverlay() {
     const injectArea = document.getElementById("floatedRphInjectArea");
     const inputs = injectArea.querySelectorAll('.save-val');
     
-    inputs.forEach(input => {
-        localStorage.setItem(input.id, input.value);
-    });
+    let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+    let rphIndex = senaraiRph.findIndex(item => item.id === idRphAktif);
 
-    const savedRPHContent = localStorage.getItem("rphHTML");
-    if (savedRPHContent) {
-        document.getElementById("weekRPH").innerHTML = savedRPHContent;
-        wrapTablesResponsively();
-        restoreTextareaValues();
+    if (rphIndex !== -1) {
+        if (!senaraiRph[rphIndex].inputData) senaraiRph[rphIndex].inputData = {};
+        
+        inputs.forEach(input => {
+            senaraiRph[rphIndex].inputData[input.id] = input.value;
+        });
+
+        const tMula = injectArea.querySelector("#tr-0") ? injectArea.querySelector("#tr-0").value : senaraiRph[rphIndex].meta.mula;
+        const tAkhir = injectArea.querySelector("#tr-4") ? injectArea.querySelector("#tr-4").value : senaraiRph[rphIndex].meta.akhir;
+        const infoMinggu = injectArea.querySelector("#mw-0") ? injectArea.querySelector("#mw-0").value : senaraiRph[rphIndex].meta.minggu;
+
+        senaraiRph[rphIndex].meta.mula = tMula;
+        senaraiRph[rphIndex].meta.akhir = tAkhir;
+        senaraiRph[rphIndex].meta.minggu = infoMinggu;
+
+        localStorage.setItem("senarai_rph_master", JSON.stringify(senaraiRph));
     }
-    
+
     alert("Perubahan data RPH berjaya disimpan secara terus! 💾");
 }
 
@@ -984,26 +1025,35 @@ function changeProfileBtn() {
     location.reload(); 
 }
 
+// Mengemaskini dan Menyimpan Jadual Mengikut Hari Khusus ke dalam LocalStorage
 function updateJadual(){
-    for(let i=1; i<=7; i++){
-        susunanJadual[i-1].masa = document.getElementById("masa"+i).value;
-        susunanJadual[i-1].subjek = document.getElementById("subjek"+i).value;
+    let hariDipilih = document.getElementById("hariPilihanJadual").value;
+    
+    for(let i = 1; i <= 7; i++){
+        pangkalanJadualInduk[hariDipilih][i-1][0] = document.getElementById("masa"+i).value;
+        pangkalanJadualInduk[hariDipilih][i-1][1] = document.getElementById("subjek"+i).value;
     }
-    localStorage.setItem("susunanJadual", JSON.stringify(susunanJadual));
+    
+    localStorage.setItem("pangkalanJadualInduk", JSON.stringify(pangkalanJadualInduk));
     closeScheduleOverlay();
-    alert("Jadual disimpan!");
+    alert("Jadual bagi hari " + hariDipilih + " berjaya disimpan!");
 }
 
+// Menjana RPH Seminggu Secara Dinamik dengan Tarikan Data Jadual Berasingan Setiap Hari
 function generateWeek(){
     let days = ["Isnin","Selasa","Rabu","Khamis","Jumaat"];
     let content = "";
+    
     for(let d=0; d<days.length; d++){
+        let hariIni = days[d];
+        let jadualHariIni = pangkalanJadualInduk[hariIni]; // Mengambil jadual spesifik hari tersebut
+
         content += `
-        <div class="floating-card print-block" data-day="${days[d]}" id="rph-card-${days[d]}">
-            <div class="main-title" style="font-size: 20px; text-align: left; margin-bottom: 20px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${days[d]})</div>
+        <div class="floating-card print-block" data-day="${hariIni}" id="rph-card-${hariIni}">
+            <div class="main-title" style="font-size: 20px; text-align: left; margin-bottom: 20px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${hariIni})</div>
             <div class="meta-grid">
                 <div class="meta-cell"><span class="meta-label">Minggu</span><input type="text" class="save-val" id="mw-${d}" placeholder="Masukkan Minggu"></div>
-                <div class="meta-cell"><span class="meta-label">Hari</span><input type="text" value="${days[d]}" readonly style="font-weight:700; color:var(--primary-color);"></div>
+                <div class="meta-cell"><span class="meta-label">Hari</span><input type="text" value="${hariIni}" readonly style="font-weight:700; color:var(--primary-color);"></div>
                 <div class="meta-cell"><span class="meta-label">Kehadiran</span><input type="text" class="save-val" id="kh-${d}" placeholder="Cth: 24/25"></div>
                 <div class="meta-cell"><span class="meta-label">Tarikh</span><input type="date" class="save-val" id="tr-${d}"></div>
             </div>
@@ -1021,23 +1071,21 @@ function generateWeek(){
                     <tbody>
                         ${[1,2,3,4,5,6,7].map(num => `
                         <tr>
-                            <td class="slot-id-${num}">${susunanJadual[num-1].masa}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${susunanJadual[num-1].subjek}</span></td>
+                            <td class="slot-id-${num}">${jadualHariIni[num-1][0]}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${jadualHariIni[num-1][1]}</span></td>
                             <td><textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
                             <td><textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
                             <td><textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
                             <td><textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
                         </tr>
-                        ${num === 3 ? '<tr class="yellow-row"><td colspan="5">REHAT</td></tr>' : ''}
+                        ${num === 3 ? '<tr class="yellow-row"><td colspan="5">9.30 – 10.00 REHAT</td></tr>' : ''}
                         `).join('')}
-                        <tr class="yellow-row"><td colspan="5">PENUTUP</td></tr>
+                        <tr class="yellow-row"><td colspan="5">11.50 – 12.00 PENUTUP</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>`;
     }
     document.getElementById("weekRPH").innerHTML = content;
-    localStorage.setItem("rphHTML", content); 
-    attachSaveListeners(); 
     toggleDynamicButtons(true);
     document.getElementById("weekRPH").scrollIntoView({ behavior: 'smooth' });
 }
@@ -1048,61 +1096,78 @@ function toggleDynamicButtons(show) {
     document.getElementById("btnBatal").style.display = displayStyle;
 }
 
-function simpanSahaja() {
-    const inputs = document.querySelectorAll('.save-val');
-    inputs.forEach(input => {
-        localStorage.setItem(input.id, input.value);
-    });
-    const rphContent = document.getElementById("weekRPH").innerHTML;
-    localStorage.setItem("rphHTML", rphContent);
-}
-
 function simpanDanBukaUrusRPH() {
-    simpanSahaja(); 
-    
     const tarikhMula = document.getElementById("tr-0") ? document.getElementById("tr-0").value : "";
     const tarikhAkhir = document.getElementById("tr-4") ? document.getElementById("tr-4").value : "";
     const mingguInfo = document.getElementById("mw-0") ? document.getElementById("mw-0").value : "Semasa";
+    
+    const rphIdUnique = "rph_" + Date.now();
 
-    if(tarikhMula || tarikhAkhir) {
-        localStorage.setItem("rph_saved_meta", JSON.stringify({
-            minggu: mingguInfo,
-            mula: tarikhMula,
-            akhir: tarikhAkhir,
+    const inputs = document.querySelectorAll('#weekRPH .save-val');
+    let dataInputTemp = {};
+    inputs.forEach(input => {
+        dataInputTemp[input.id] = input.value;
+    });
+
+    const htmlContentDraft = document.getElementById("weekRPH").innerHTML;
+
+    let dataRphBaru = {
+        id: rphIdUnique,
+        htmlContent: htmlContentDraft,
+        inputData: dataInputTemp,
+        meta: {
+            minggu: mingguInfo || "Semasa",
+            mula: tarikhMula || "[Belum Diisi]",
+            akhir: tarikhAkhir || "[Belum Diisi]",
             guru: semasaGuru
-        }));
-    }
+        }
+    };
+
+    let senaraiRphMaster = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+    senaraiRphMaster.push(dataRphBaru);
+    localStorage.setItem("senarai_rph_master", JSON.stringify(senaraiRphMaster));
 
     document.getElementById("weekRPH").innerHTML = "";
     toggleDynamicButtons(false);
 
     openRPHOverlay();
-    alert("Data RPH berjaya disimpan secara berpusat! 💾");
+    alert("Data RPH berjaya disimpan secara berpusat ke dalam senarai arkib! 💾");
 }
 
 function kemaskiniSenaraiOverlayRPH() {
     const listContainer = document.getElementById("savedRPHList");
-    const hasHTML = localStorage.getItem("rphHTML");
-    const savedMeta = localStorage.getItem("rph_saved_meta");
+    const senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
 
-    if (hasHTML && savedMeta) {
-        const meta = JSON.parse(savedMeta);
-        const tMula = meta.mula ? meta.mula : "[Belum Diisi]";
-        const tAkhir = meta.akhir ? meta.akhir : "[Belum Diisi]";
+    if (senaraiRph.length > 0) {
+        let susunanKadListHTML = "";
         
-        listContainer.innerHTML = `
-            <div class="rph-record-card">
-                <div class="rph-record-info">
-                    <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${meta.minggu} (${meta.guru})</span>
-                    <span style="font-size: 13px; color: #e74c3c; font-weight:600;">📅 ${tMula} hingga ${tAkhir}</span>
+        senaraiRph.forEach(item => {
+            susunanKadListHTML += `
+                <div class="rph-record-card" id="card-${item.id}">
+                    <div class="rph-record-info">
+                        <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${item.meta.minggu} (${item.meta.guru})</span>
+                        <span style="font-size: 13px; color: #e74c3c; font-weight:600;">📅 ${item.meta.mula} hingga ${item.meta.akhir}</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-primary" style="padding: 8px 15px; font-size:12px;" onclick="bukaPilihanLihatOverlay('${item.id}')">Lihat / Sunting</button>
+                        <button class="btn-cancel" style="padding: 8px 12px; font-size:12px; background:#e74c3c;" onclick="padamRekodRph('${item.id}')">🗑️</button>
+                    </div>
                 </div>
-                <div>
-                    <button class="btn-primary" style="padding: 8px 15px; font-size:12px; width:100%;" onclick="bukaPilihanLihatOverlay()">Lihat / Sunting</button>
-                </div>
-            </div>
-        `;
+            `;
+        });
+        
+        listContainer.innerHTML = susunanKadListHTML;
     } else {
         listContainer.innerHTML = `<p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Tiada rekod RPH tersimpan dikesan.</p>`;
+    }
+}
+
+function padamRekodRph(id) {
+    if (confirm("Adakah anda pasti untuk memadam rekod RPH ini secara kekal dari sistem?")) {
+        let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+        senaraiRph = senaraiRph.filter(item => item.id !== id);
+        localStorage.setItem("senarai_rph_master", JSON.stringify(senaraiRph));
+        kemaskiniSenaraiOverlayRPH();
     }
 }
 
@@ -1115,45 +1180,20 @@ function cancelRPHGeneration() {
     }
 }
 
-function attachSaveListeners() {
-    const inputs = document.querySelectorAll('.save-val');
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            localStorage.setItem(input.id, input.value);
-        });
-    });
-}
-
-function restoreTextareaValues() {
-    const inputs = document.querySelectorAll('.save-val');
-    inputs.forEach(input => {
-        const savedVal = localStorage.getItem(input.id);
-        if (savedVal) { input.value = savedVal; }
-    });
-    attachSaveListeners(); 
-}
-
-function wrapTablesResponsively() {
-    const mainArea = document.getElementById("weekRPH");
-    const tables = mainArea.querySelectorAll('table');
-    tables.forEach(table => {
-        if (!table.parentElement.classList.contains('table-responsive')) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'table-responsive';
-            table.parentNode.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-        }
-    });
-}
+// Auto-expand textarea secara dinamik (Diambil dari Kod Lama)
+document.addEventListener("input", function(e){
+    if(e.target.tagName.toLowerCase() === "textarea"){
+        e.target.style.height = "auto";
+        e.target.style.height = (e.target.scrollHeight) + "px";
+    }
+});
 
 function kongsiRPHKeWhatsAppAtauLain() {
     const element = document.getElementById("floatedRphInjectArea");
-    const savedMeta = localStorage.getItem("rph_saved_meta");
-    let namaMinggu = "Semasa";
-    if (savedMeta) {
-        const meta = JSON.parse(savedMeta);
-        namaMinggu = meta.minggu ? "Minggu_" + meta.minggu : "Semasa";
-    }
+    
+    let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+    let rphDipilih = senaraiRph.find(item => item.id === idRphAktif);
+    let namaMinggu = rphDipilih ? "Minggu_" + rphDipilih.meta.minggu : "Semasa";
 
     const tajukFail = `RPH_${namaMinggu}_(${semasaGuru})_${modPaparanSemasa}.pdf`;
 
