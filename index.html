@@ -132,6 +132,10 @@ body {
     text-transform: capitalize;
 }
 
+.capitalize-input {
+    text-transform: capitalize;
+}
+
 .setup-card input[type="text"] {
     width: 100%;
     background-color: #f1f5f8;
@@ -157,7 +161,7 @@ body {
     background: linear-gradient(135deg, #ff7675 0%, #ef5756 100%);
     color: #ffffff !important;
     border: none;
-    padding: 14px 20px;
+    padding: 14px 24px;
     font-size: 15px;
     font-weight: 800;
     border-radius: 16px;
@@ -415,7 +419,7 @@ body {
     background: var(--bg-card);
     border: 1px solid rgba(0, 0, 0, 0.02);
     border-radius: var(--border-radius-lg);
-    padding: 15px;
+    padding: 18px;
     box-shadow: var(--shadow-floating);
     margin-bottom: 25px;
 }
@@ -543,29 +547,76 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 
 .dynamic-action-btn { display: none; }
 
+/* ==========================================================================
+   ⚙️ GAYA LAYOUT REKA BENTUK GRID BARU (PREMIUM & ANTI-TERPOTONG MOBILE)
+   ========================================================================== */
 .meta-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 12px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .meta-cell {
-    background: #f8fafc;
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
+    background: #ffffff;
+    padding: 10px 12px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    border: 1px solid #eef2f5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.meta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #95a5a6;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
     gap: 4px;
 }
 
+.meta-cell input {
+    width: 100% !important;
+    background-color: #f8fafc !important;
+    color: var(--text-primary) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    box-sizing: border-box !important;
+}
+
+.meta-cell input:focus {
+    border-color: var(--primary-color) !important;
+    background-color: #ffffff !important;
+}
+
 /* ==========================================================================
-   📱 MOBILE VIEW BREAKPOINT & LOGIK RESPONSIVE LANDSCAPE COUPE
+   📱 MOBILE VIEW BREAKPOINT & LOGIK RESPONSIVE JADUAL / GRID MAKULMAT
    ========================================================================== */
 @media (max-width: 768px) {
     .main-title { font-size: 20px; }
-    #btnMobileLandscapeTrigger { display: inline-block; } /* Aktifkan hanya pada mobile view */
+    #btnMobileLandscapeTrigger { display: inline-block; } 
     
+    .meta-grid {
+        grid-template-columns: repeat(2, 1fr) !important; 
+        gap: 10px !important;
+    }
+
+    .meta-cell input[type="date"] {
+        padding: 8px 6px !important;
+        font-size: 12px !important;
+    }
+
+    /* Sistem kad tersusun menegak mobile */
     table, thead, tbody, th, td, tr { 
         display: block; 
         width: 100% !important;
@@ -626,7 +677,7 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
         font-size: 11px;
     }
 
-    /* 🔥 FORCE REALTIME ROTATION LANDSCAPE VIA CSS FOR MOBILE VIEW ONLY */
+    /* FORCE REALTIME ROTATION LANDSCAPE VIA CSS FOR MOBILE VIEW ONLY */
     .forced-landscape-active {
         position: fixed !important;
         top: 0 !important;
@@ -643,14 +694,15 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
         box-sizing: border-box !important;
     }
 
-    /* Pulihkan semula struktur asal baris jadual desktop ketika mod pusingan landscape diaktifkan */
+    /* Kembalikan semula rupa jadual asal desktop apabila masuk mod pusingan landscape */
     .forced-landscape-active table { display: table !important; min-width: 850px !important; }
     .forced-landscape-active thead { display: table-header-group !important; }
     .forced-landscape-active tbody { display: table-row-group !important; }
-    .forced-landscape-active tr { display: table-row !important; background: transparent !important; border: none !important; box-shadow: none !important; }
+    .forced-landscape-active tr { display: table-row !important; background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 0 !important; padding: 0 !important; }
     .forced-landscape-active td, .forced-landscape-active th { display: table-cell !important; border: 1px solid rgba(0, 0, 0, 0.08) !important; padding: 8px 5px !important; }
     .forced-landscape-active td::before { display: none !important; }
     .forced-landscape-active td:first-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important; padding-bottom: 8px !important; margin-bottom: 0; font-size: 13px; }
+    .forced-landscape-active .meta-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 12px !important; }
 }
 </style>
 </head>
@@ -945,6 +997,7 @@ function bukaPilihanHariDalaman() {
     sHari.style.display = (sHari.style.display === "none") ? "grid" : "none";
 }
 
+// 🔥 FIX UTAMA: MEMBAIKPULIH KESELURUHAN LOGIK INJECT DATA OVERLAY
 function bukaRphBesarOverlay(mod) {
     modPaparanSemasa = mod;
     tutupPilihanLihatOverlay();
@@ -964,6 +1017,7 @@ function bukaRphBesarOverlay(mod) {
     const injectArea = document.getElementById("floatedRphInjectArea");
     injectArea.innerHTML = rphDipilih.htmlContent;
 
+    // Masukkan sebarang nilai teks yang tersimpan ke dalam borang input masing-masing
     const inputs = injectArea.querySelectorAll('.save-val');
     inputs.forEach(input => {
         if (rphDipilih.inputData && rphDipilih.inputData[input.id] !== undefined) {
@@ -971,18 +1025,19 @@ function bukaRphBesarOverlay(mod) {
         }
     });
 
+    // Tapisan sistem bagi menyusun kad harian mengikut kehendak butang menu (Semua / Isnin - Jumaat)
     const cards = injectArea.querySelectorAll('.print-block');
-    if (mod === 'Semua') {
-        cards.forEach(card => card.style.display = "block");
-    } else {
-        cards.forEach(card => {
+    cards.forEach(card => {
+        if (mod === 'Semua') {
+            card.style.setProperty('display', 'block', 'important');
+        } else {
             if (card.getAttribute('data-day') === mod) {
-                card.style.display = "block";
+                card.style.setProperty('display', 'block', 'important');
             } else {
-                card.style.display = "none";
+                card.style.setProperty('display', 'none', 'important');
             }
-        });
-    }
+        }
+    });
 
     setTimeout(() => {
         const tas = injectArea.querySelectorAll('textarea');
@@ -996,14 +1051,12 @@ function bukaRphBesarOverlay(mod) {
 }
 
 function tutupRphBesarOverlay() {
-    // Matikan mod landscape sekiranya aktif sebelum menutup paparan utama
     const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
     if(panelMobile.classList.contains("forced-landscape-active")) { toggleForcedLandscapeMode(); }
     
     document.getElementById("rphBesarOverlay").classList.remove("active");
 }
 
-// 🔥 FUNGSI UTAMA: LOGIK PUSINGAN VISUAL LANDSCAPE UNTUK MOBILE VIEW
 function toggleForcedLandscapeMode() {
     const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
     const butangSuis = document.getElementById("btnMobileLandscapeTrigger");
@@ -1033,6 +1086,7 @@ function simpanDataDariFloatedOverlay() {
             senaraiRph[rphIndex].inputData[input.id] = input.value;
         });
 
+        // Mengemas kini data metadata RPH berpusat berdasarkan draf input induk
         const tMula = injectArea.querySelector("#tr-0") ? injectArea.querySelector("#tr-0").value : senaraiRph[rphIndex].meta.mula;
         const tAkhir = injectArea.querySelector("#tr-4") ? injectArea.querySelector("#tr-4").value : senaraiRph[rphIndex].meta.akhir;
         const infoMinggu = injectArea.querySelector("#mw-0") ? injectArea.querySelector("#mw-0").value : senaraiRph[rphIndex].meta.minggu;
@@ -1071,12 +1125,26 @@ function generateWeek(){
         content += `
         <div class="floating-card print-block" data-day="${hariIni}" id="rph-card-${hariIni}">
             <div class="main-title" style="font-size: 18px; text-align: left; margin-bottom: 15px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${hariIni})</div>
+            
             <div class="meta-grid">
-                <div class="meta-cell"><span class="meta-label">Minggu</span><input type="text" class="save-val" id="mw-${d}" placeholder="Minggu"></div>
-                <div class="meta-cell"><span class="meta-label">Hari</span><input type="text" value="${hariIni}" readonly style="font-weight:700; color:var(--primary-color);"></div>
-                <div class="meta-cell"><span class="meta-label">Kehadiran</span><input type="text" class="save-val" id="kh-${d}" placeholder="Cth: 24/25"></div>
-                <div class="meta-cell"><span class="meta-label">Tarikh</span><input type="date" class="save-val" id="tr-${d}"></div>
+                <div class="meta-cell">
+                    <span class="meta-label">🗓️ Minggu</span>
+                    <input type="text" class="save-val" id="mw-${d}" placeholder="Contoh: 1">
+                </div>
+                <div class="meta-cell">
+                    <span class="meta-label">🏫 Hari</span>
+                    <input type="text" value="${hariIni}" readonly style="font-weight:700; color:var(--primary-color);">
+                </div>
+                <div class="meta-cell">
+                    <span class="meta-label">👥 Kehadiran</span>
+                    <input type="text" class="save-val" id="kh-${d}" placeholder="Cth: 24/25">
+                </div>
+                <div class="meta-cell">
+                    <span class="meta-label">📅 Tarikh</span>
+                    <input type="date" class="save-val" id="tr-${d}">
+                </div>
             </div>
+
             <div class="table-responsive">
                 <table>
                     <thead>
