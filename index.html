@@ -489,20 +489,6 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 4px rgba(255, 118, 117, 0.1);
 }
 
-/* --- BUTTON MOBILE FLOATED LANDSCAPE --- */
-#btnMobileLandscapeTrigger {
-    display: none;
-    background: linear-gradient(135deg, #9c88ff, #786fa6);
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(156, 136, 255, 0.3);
-}
-
 /* --- FLOATED STICKY CONTROL BAR --- */
 .floated-menu-bar {
     position: fixed;
@@ -547,9 +533,7 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 
 .dynamic-action-btn { display: none; }
 
-/* ==========================================================================
-   ⚙️ GAYA LAYOUT REKA BENTUK GRID BARU (PREMIUM & ANTI-TERPOTONG MOBILE)
-   ========================================================================== */
+/* --- GAYA REKA BENTUK GRID --- */
 .meta-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
@@ -600,11 +584,10 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 }
 
 /* ==========================================================================
-   📱 MOBILE VIEW BREAKPOINT & LOGIK RESPONSIVE JADUAL / GRID MAKULMAT
+   📱 MOBILE VIEW BREAKPOINT
    ========================================================================== */
 @media (max-width: 768px) {
     .main-title { font-size: 20px; }
-    #btnMobileLandscapeTrigger { display: inline-block; } 
     
     .meta-grid {
         grid-template-columns: repeat(2, 1fr) !important; 
@@ -616,7 +599,6 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
         font-size: 12px !important;
     }
 
-    /* Sistem kad tersusun menegak mobile */
     table, thead, tbody, th, td, tr { 
         display: block; 
         width: 100% !important;
@@ -676,33 +658,6 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
         padding: 10px 8px;
         font-size: 11px;
     }
-
-    /* FORCE REALTIME ROTATION LANDSCAPE VIA CSS FOR MOBILE VIEW ONLY */
-    .forced-landscape-active {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vh !important;
-        height: 100vw !important;
-        max-height: 100vw !important;
-        background: #ffffff !important;
-        z-index: 999999 !important;
-        transform: rotate(90deg) translate(0, -100vh) !important;
-        transform-origin: top left !important;
-        overflow-y: auto !important;
-        padding: 20px !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Kembalikan semula rupa jadual asal desktop apabila masuk mod pusingan landscape */
-    .forced-landscape-active table { display: table !important; min-width: 850px !important; }
-    .forced-landscape-active thead { display: table-header-group !important; }
-    .forced-landscape-active tbody { display: table-row-group !important; }
-    .forced-landscape-active tr { display: table-row !important; background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 0 !important; padding: 0 !important; }
-    .forced-landscape-active td, .forced-landscape-active th { display: table-cell !important; border: 1px solid rgba(0, 0, 0, 0.08) !important; padding: 8px 5px !important; }
-    .forced-landscape-active td::before { display: none !important; }
-    .forced-landscape-active td:first-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important; padding-bottom: 8px !important; margin-bottom: 0; font-size: 13px; }
-    .forced-landscape-active .meta-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 12px !important; }
 }
 </style>
 </head>
@@ -840,12 +795,11 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 
     <!-- 4. OVERLAY PANEL: BACA / EDIT RPH BESAR -->
     <div id="rphBesarOverlay" class="schedule-overlay-backdrop" style="z-index: 40000;">
-        <div class="rph-display-panel" id="rphDisplayPanelMobileTarget">
-            <div class="rph-besar-header" id="rphBesarMobileHeaderControl">
+        <div class="rph-display-panel">
+            <div class="rph-besar-header">
                 <div class="header-left-group">
                     <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
                     <div class="header-buttons-group">
-                        <button id="btnMobileLandscapeTrigger" onclick="toggleForcedLandscapeMode()">📱 Mod Landscape Penuh</button>
                         <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
                     </div>
                 </div>
@@ -854,7 +808,7 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
             
             <div id="floatedRphInjectArea"></div>
 
-            <div class="wide-panel-actions" style="margin-top:25px;" id="rphBesarMobileFooterControl">
+            <div class="wide-panel-actions" style="margin-top:25px;">
                 <button onclick="tutupRphBesarOverlay()">Tutup Skrin</button>
             </div>
         </div>
@@ -997,7 +951,6 @@ function bukaPilihanHariDalaman() {
     sHari.style.display = (sHari.style.display === "none") ? "grid" : "none";
 }
 
-// 🔥 FIX UTAMA: MEMBAIKPULIH KESELURUHAN LOGIK INJECT DATA OVERLAY
 function bukaRphBesarOverlay(mod) {
     modPaparanSemasa = mod;
     tutupPilihanLihatOverlay();
@@ -1017,7 +970,6 @@ function bukaRphBesarOverlay(mod) {
     const injectArea = document.getElementById("floatedRphInjectArea");
     injectArea.innerHTML = rphDipilih.htmlContent;
 
-    // Masukkan sebarang nilai teks yang tersimpan ke dalam borang input masing-masing
     const inputs = injectArea.querySelectorAll('.save-val');
     inputs.forEach(input => {
         if (rphDipilih.inputData && rphDipilih.inputData[input.id] !== undefined) {
@@ -1025,7 +977,6 @@ function bukaRphBesarOverlay(mod) {
         }
     });
 
-    // Tapisan sistem bagi menyusun kad harian mengikut kehendak butang menu (Semua / Isnin - Jumaat)
     const cards = injectArea.querySelectorAll('.print-block');
     cards.forEach(card => {
         if (mod === 'Semua') {
@@ -1051,25 +1002,7 @@ function bukaRphBesarOverlay(mod) {
 }
 
 function tutupRphBesarOverlay() {
-    const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
-    if(panelMobile.classList.contains("forced-landscape-active")) { toggleForcedLandscapeMode(); }
-    
     document.getElementById("rphBesarOverlay").classList.remove("active");
-}
-
-function toggleForcedLandscapeMode() {
-    const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
-    const butangSuis = document.getElementById("btnMobileLandscapeTrigger");
-    
-    if(!panelMobile.classList.contains("forced-landscape-active")) {
-        panelMobile.classList.add("forced-landscape-active");
-        butangSuis.innerText = "🔄 Tutup Mod Landscape";
-        butangSuis.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
-    } else {
-        panelMobile.classList.remove("forced-landscape-active");
-        butangSuis.innerText = "📱 Mod Landscape Penuh";
-        butangSuis.style.background = "linear-gradient(135deg, #9c88ff, #786fa6)";
-    }
 }
 
 function simpanDataDariFloatedOverlay() {
@@ -1086,7 +1019,6 @@ function simpanDataDariFloatedOverlay() {
             senaraiRph[rphIndex].inputData[input.id] = input.value;
         });
 
-        // Mengemas kini data metadata RPH berpusat berdasarkan draf input induk
         const tMula = injectArea.querySelector("#tr-0") ? injectArea.querySelector("#tr-0").value : senaraiRph[rphIndex].meta.mula;
         const tAkhir = injectArea.querySelector("#tr-4") ? injectArea.querySelector("#tr-4").value : senaraiRph[rphIndex].meta.akhir;
         const infoMinggu = injectArea.querySelector("#mw-0") ? injectArea.querySelector("#mw-0").value : senaraiRph[rphIndex].meta.minggu;
