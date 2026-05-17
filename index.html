@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistem RPH Al Faqeh Kidz Villa Putra - Edisi Guru 2026</title>
 
-<!-- Memasukkan pustaka html2pdf.js untuk penukaran HTML ke fail PDF secara terus -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 <style>
 /* --- PRESCHOOL LIGHT THEME 2026 --- */
 :root {
@@ -35,10 +32,10 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px 15px 160px 15px; /* Ditambah padding bawah untuk elak terlindung dek menu bar */
+    padding: 20px 15px 160px 15px;
 }
 
-/* --- PROFILE SELECTION SCREEN --- */
+/* --- FIRST TIME SETUP PROFILE SCREEN --- */
 #profileScreen {
     position: fixed;
     top: 0;
@@ -56,66 +53,63 @@ body {
     box-sizing: border-box;
 }
 
+.setup-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 .profile-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 800;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     color: #2c3e50;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
     letter-spacing: -0.5px;
-    text-align: center;
 }
 
-.profile-grid {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 1000px;
-    padding: 20px;
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
 }
 
-.profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    width: 120px; /* Saiz tetap di mobile */
-}
-
-.profile-card:hover {
-    transform: scale(1.1);
-}
-
-.avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
+.form-group label {
+    font-size: 13px;
     font-weight: 700;
-    color: #ffffff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    margin-bottom: 12px;
-    border: 4px solid #ffffff;
-    transition: box-shadow 0.3s;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: block;
 }
 
-.profile-name {
-    font-size: 14px;
+.input-container-prefix {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-prefix {
+    position: absolute;
+    left: 12px;
+    font-size: 13px;
     font-weight: 700;
-    color: #576574;
-    text-align: center;
+    color: var(--primary-color);
+    user-select: none;
+    pointer-events: none;
 }
 
-.p-farhanna { background: linear-gradient(135deg, #ff9ff3, #feca57); }
-.p-hanis { background: linear-gradient(135deg, #ff6b6b, #ff8787); }
-.p-mimi { background: linear-gradient(135deg, #48dbfb, #1dd1a1); }
-.p-balqis { background: linear-gradient(135deg, #9c88ff, #f53b57); }
-.p-syaza { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+.input-with-prefix {
+    padding-left: 60px !important;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.capitalize-input {
+    text-transform: capitalize;
+}
 
 #mainApp {
     display: none;
@@ -200,7 +194,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    padding: 10px; /* Jarak selamat di skrin mobile */
+    padding: 10px;
     box-sizing: border-box;
 }
 
@@ -223,11 +217,11 @@ body {
     transition: all 0.3s ease;
 }
 
-/* --- OVERLAY PAPARAN RPH (BESAR TAPI TAK PENUH SKRIN) --- */
+/* --- OVERLAY PAPARAN RPH --- */
 .rph-display-panel {
     background: #ffffff;
     width: 100%; 
-    max-width: 1150px;
+    max-width: 1200px;
     height: 90vh;
     overflow-y: auto;
     border-radius: var(--border-radius-lg);
@@ -243,7 +237,7 @@ body {
     transform: translateY(0) scale(1);
 }
 
-/* --- MINI FLOATED OVERLAY (CHOICE MENU) --- */
+/* --- MINI FLOATED OVERLAY --- */
 .mini-overlay-panel {
     background: #ffffff;
     width: 100%;
@@ -270,7 +264,6 @@ body {
     padding-bottom: 12px;
 }
 
-/* Ubahsuai Khas Header untuk RPH Besar - Susun butang di sebelah tajuk */
 .rph-besar-header {
     display: flex;
     flex-wrap: wrap;
@@ -384,7 +377,7 @@ body {
     padding: 15px;
     border-radius: 10px;
     display: flex;
-    flex-direction: column; /* Mesra mobile secara lalai */
+    flex-direction: column;
     gap: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
@@ -425,43 +418,35 @@ body {
 
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px;
-    min-width: 800px;
-    table-layout: fixed; /* Mengekang kelebaran sel agar mengikut peratusan th */
+    border-collapse: collapse;
+    min-width: 900px;
+    table-layout: fixed; 
 }
 
 th {
-    padding: 10px 12px;
+    background: #ffffff;
+    padding: 12px 10px;
     text-align: left;
     color: var(--text-secondary);
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
 }
 
 td {
     background: var(--bg-card);
-    padding: 14px 12px;
+    padding: 12px 10px;
     font-size: 13px;
-    border-top: 1px solid rgba(0, 0, 0, 0.03);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     vertical-align: top;
-    word-break: break-word; /* Mengelakkan perkataan panjang merosakkan layout table */
+    word-break: break-word; 
+    overflow: visible;
 }
 
 td:first-child {
-    border-left: 1px solid rgba(0, 0, 0, 0.03);
-    border-top-left-radius: var(--border-radius-sm);
-    border-bottom-left-radius: var(--border-radius-sm);
     font-weight: 700;
     color: var(--primary-color);
-}
-
-td:last-child {
-    border-right: 1px solid rgba(0, 0, 0, 0.03);
-    border-top-right-radius: var(--border-radius-sm);
-    border-bottom-right-radius: var(--border-radius-sm);
 }
 
 .purple-header th { color: #8e44ad; }
@@ -478,7 +463,8 @@ td:last-child {
     padding: 10px !important;
 }
 
-input, select, textarea {
+/* 🔥 KUNCI MATI TEXTAREA JADUAL UTAMA (ANTI-TERPOTONG / TERSEMUNYI KETEPI) */
+textarea {
     width: 100%;
     background-color: var(--bg-input);
     color: var(--text-primary);
@@ -489,6 +475,14 @@ input, select, textarea {
     font-family: inherit;
     font-size: 13px;
     transition: all 0.25s ease;
+    height: 90px;
+    resize: vertical;
+    
+    /* Aturan Penyalamat Semasa Menaip Draf */
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow-y: hidden;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -498,25 +492,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 4px rgba(255, 118, 117, 0.1);
 }
 
-textarea {
-    height: 80px;
-    resize: vertical;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-/* Elemen teks gantian sementara semasa mod PDF/Eksport */
-.pdf-text-replacement {
-    display: none;
-    white-space: pre-wrap;
-    word-break: break-word;
-    font-size: 12px;
-    color: #000000;
-    line-height: 1.4;
-    padding: 2px;
-}
-
-/* --- FLOATED STICKY CONTROL BAR (RE-DESIGNED FOR MOBILE) --- */
+/* --- FLOATED STICKY CONTROL BAR --- */
 .floated-menu-bar {
     position: fixed;
     bottom: 15px;
@@ -573,13 +549,6 @@ button.btn-save {
     box-shadow: 0 6px 15px rgba(9, 132, 227, 0.2);
 }
 
-button.btn-pdf {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    border: none;
-    color: #ffffff;
-    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.2);
-}
-
 button.btn-cancel {
     background: #d63031;
     border: none;
@@ -621,38 +590,6 @@ button.btn-cancel {
     font-weight: 700;
 }
 
-/* --- PENAMBAHAN CSS KHAS UNTUK GENERASI PDF AGAR FIT PAGE --- */
-.html2pdf-pdf-mode .floating-card {
-    box-shadow: none !important;
-    border: 1px solid #000000 !important;
-    background: #ffffff !important;
-    page-break-after: always !important;
-    page-break-inside: avoid !important;
-    margin: 0 0 20px 0 !important;
-    padding: 15px !important;
-}
-
-.html2pdf-pdf-mode table {
-    min-width: 100% !important;
-    width: 100% !important;
-    table-layout: fixed !important;
-}
-
-.html2pdf-pdf-mode td {
-    word-break: break-word !important;
-    white-space: pre-wrap !important;
-}
-
-.html2pdf-pdf-mode input, 
-.html2pdf-pdf-mode textarea {
-    display: none !important; /* Sorokkan elemen input sebenar semasa bina PDF */
-}
-
-.html2pdf-pdf-mode .pdf-text-replacement {
-    display: block !important; /* Paparkan teks asal bertulis penuh ke bawah */
-}
-
-/* --- PENAMBAHAN MEDIA QUERIES KHAS MOBILES (EXTRA CODES) --- */
 @media (max-width: 576px) {
     .container {
         padding-bottom: 220px;
@@ -688,58 +625,31 @@ button.btn-cancel {
         padding: 8px 12px;
         font-size: 11px;
     }
-    .avatar {
-        width: 75px;
-        height: 75px;
-        font-size: 28px;
-    }
-    .profile-card {
-        width: 95px;
-    }
-    .profile-title {
-        font-size: 22px;
-    }
-}
-
-@media print {
-    body { background-color: #fff; color: #000; padding: 0; }
-    #profileScreen, .floated-menu-bar, .schedule-overlay-backdrop, .action-buttons-group, .main-title, .welcome-banner { display: none !important; }
-    .print-block { background: #fff !important; color: #000 !important; border: none !important; box-shadow: none !important; page-break-after: always; padding: 0; margin: 0 0 30px 0; }
-    table { border-spacing: 0; min-width: 100% !important; table-layout: fixed !important; }
-    td { background: transparent !important; color: #000 !important; border: 1px solid #000 !important; word-break: break-word !important; }
-    .table-responsive { overflow-x: visible !important; }
-    textarea, input { display: none !important; }
-    .pdf-text-replacement { display: block !important; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- GATED PROFILE SELECTION SCREEN -->
+<!-- FLOATED FIRST-TIME SETUP PROFILE SCREEN -->
 <div id="profileScreen">
-    <div class="profile-title">Choose your profile</div>
-    <div class="profile-grid">
-        <div class="profile-card" onclick="selectProfile('Cikgu Farhanna')">
-            <div class="avatar p-farhanna">F</div>
-            <div class="profile-name">Cikgu Farhanna</div>
+    <div class="setup-card">
+        <div class="profile-title">Tetapkan profil anda</div>
+        
+        <div class="form-group">
+            <label>Nama Panggilan:</label>
+            <div class="input-container-prefix">
+                <span class="input-prefix">Cikgu </span>
+                <input type="text" id="setupNickname" class="input-with-prefix" placeholder="Taip nama anda di sini..." oninput="autoCapitalizeWords(this)">
+            </div>
         </div>
-        <div class="profile-card" onclick="selectProfile('Cikgu Hanis')">
-            <div class="avatar p-hanis">H</div>
-            <div class="profile-name">Cikgu Hanis</div>
+
+        <div class="form-group">
+            <label>Nama Kelas :</label>
+            <input type="text" id="setupClassName" class="capitalize-input" placeholder="Contoh: Al-Fatih / Genius / 5 Tahun" oninput="autoCapitalizeWords(this)">
         </div>
-        <div class="profile-card" onclick="selectProfile('Cikgu Mimi')">
-            <div class="avatar p-mimi">M</div>
-            <div class="profile-name">Cikgu Mimi</div>
-        </div>
-        <div class="profile-card" onclick="selectProfile('Cikgu Balqis')">
-            <div class="avatar p-balqis">B</div>
-            <div class="profile-name">Cikgu Balqis</div>
-        </div>
-        <div class="profile-card" onclick="selectProfile('Cikgu Syaza')">
-            <div class="avatar p-syaza">S</div>
-            <div class="profile-name">Cikgu Syaza</div>
-        </div>
+
+        <button class="btn-primary" style="width:100%; padding:12px; font-size:14px; margin-top:10px;" onclick="saveInitialProfile()">Simpan Profil & Masuk</button>
     </div>
 </div>
 
@@ -857,8 +767,6 @@ button.btn-cancel {
                 <div class="header-left-group">
                     <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
                     <div class="header-buttons-group">
-                        <button class="btn-primary" style="background: linear-gradient(135deg, #25d366, #128c7e);" id="btnEksportPDF" onclick="kongsiRPHKeWhatsAppAtauLain('share')">🔗 Kongsi RPH (PDF)</button>
-                        <button class="btn-pdf" id="btnMuatTurunPDF" onclick="kongsiRPHKeWhatsAppAtauLain('download')">📥 Muat Turun PDF</button>
                         <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
                     </div>
                 </div>
@@ -876,9 +784,9 @@ button.btn-cancel {
     <!-- DRAF UTAMA KELUAR DI BELAKANG APABILA KLIK 'JANA SEMINGGU' BARU -->
     <div id="weekRPH"></div>
 
-    <!-- FLOATED CONTROL BAR -->
+    <!-- FLOATING CONTROL BAR -->
     <div class="floated-menu-bar">
-        <button onclick="changeProfileBtn()">Tukar Profil</button>
+        <button onclick="changeProfileBtn()">Edit Profil</button>
         <button class="btn-primary" id="btnJana" onclick="generateWeek()">Jana RPH Seminggu</button>
         <button class="btn-save dynamic-action-btn" id="btnSimpan" onclick="simpanDanBukaUrusRPH()">💾 Simpan Data RPH</button>
         <button class="btn-cancel dynamic-action-btn" id="btnBatal" onclick="cancelRPHGeneration()">❌ Batal Janaan</button>
@@ -887,7 +795,6 @@ button.btn-cancel {
 </div>
 
 <script>
-// Master Data Pangkalan Jadual Asal dari Coding Lama
 let pangkalanJadualInduk = {
     "Isnin":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
     "Selasa":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
@@ -896,15 +803,23 @@ let pangkalanJadualInduk = {
     "Jumaat":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Jawi"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Seni"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]]
 };
 
-let semasaGuru = "Guru";
+let semasaGuru = "";
+let semasaKelas = "";
 let modPaparanSemasa = "Semua";
 let idRphAktif = null;
 
 window.onload = function() {
-    const savedProfile = localStorage.getItem("semasaGuru");
-    if (savedProfile) { selectProfile(savedProfile, true); }
+    const savedNickname = localStorage.getItem("semasaGuru");
+    const savedClassName = localStorage.getItem("semasaKelas");
+    
+    if (savedNickname && savedClassName) {
+        semasaGuru = savedNickname;
+        semasaKelas = savedClassName;
+        applyMainHubDisplay();
+    } else {
+        document.getElementById("profileScreen").style.display = "flex";
+    }
 
-    // Membaca atau memuatkan storan jadual utama ke LocalStorage
     const savedJadualInduk = localStorage.getItem("pangkalanJadualInduk");
     if (savedJadualInduk) {
         pangkalanJadualInduk = JSON.parse(savedJadualInduk);
@@ -912,12 +827,68 @@ window.onload = function() {
         localStorage.setItem("pangkalanJadualInduk", JSON.stringify(pangkalanJadualInduk));
     }
 
-    // Panggil paparan input jadual berdasarkan hari default (Isnin)
     loadJadualEditBerdasarkanHari();
     kemaskiniSenaraiOverlayRPH();
 };
 
-// Fungsi Memuatkan Data Input Masa & Subjek Berdasarkan Hari yang dipilih
+function autoCapitalizeWords(inputElement) {
+    let kata = inputElement.value;
+    let hasilCapitalize = kata.split(' ').map(perkataan => {
+        return perkataan.charAt(0).toUpperCase() + perkataan.slice(1);
+    }).join(' ');
+    
+    let cursorPosition = inputElement.selectionStart;
+    inputElement.value = hasilCapitalize;
+    inputElement.setSelectionRange(cursorPosition, cursorPosition);
+}
+
+function saveInitialProfile() {
+    let nameInput = document.getElementById("setupNickname").value.trim();
+    let classInput = document.getElementById("setupClassName").value.trim();
+
+    if (!nameInput) {
+        alert("Sila masukkan nama panggilan anda.");
+        return;
+    }
+    if (!classInput) {
+        alert("Sila masukkan nama kelas anda.");
+        return;
+    }
+
+    semasaGuru = "Cikgu " + nameInput;
+    semasaKelas = classInput;
+
+    localStorage.setItem("semasaGuru", semasaGuru);
+    localStorage.setItem("semasaKelas", semasaKelas);
+
+    const pScreen = document.getElementById("profileScreen");
+    const mainApp = document.getElementById("mainApp");
+
+    pScreen.style.opacity = "0";
+    setTimeout(() => {
+        pScreen.style.visibility = "hidden";
+        pScreen.style.display = "none";
+        mainApp.style.display = "block";
+        setTimeout(() => { mainApp.style.opacity = "1"; }, 50);
+        applyMainHubDisplay();
+    }, 500);
+}
+
+function applyMainHubDisplay() {
+    document.getElementById("profileScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    document.getElementById("mainApp").style.opacity = "1";
+    document.getElementById("userWelcome").innerHTML = `✨ <strong>${semasaGuru}</strong> | Kelas: <strong>${semasaKelas}</strong>`;
+}
+
+function changeProfileBtn() {
+    if(confirm("Adakah anda pasti untuk menukar profil? Semua data nama dan kelas akan diganti baharu.")) {
+        localStorage.removeItem("semasaGuru"); 
+        localStorage.removeItem("semasaKelas"); 
+        location.reload(); 
+    }
+}
+
 function loadJadualEditBerdasarkanHari() {
     let hariDipilih = document.getElementById("hariPilihanJadual").value;
     let dataHari = pangkalanJadualInduk[hariDipilih];
@@ -996,6 +967,14 @@ function bukaRphBesarOverlay(mod) {
         });
     }
 
+    setTimeout(() => {
+        const tas = injectArea.querySelectorAll('textarea');
+        tas.forEach(t => {
+            t.style.height = "auto";
+            t.style.height = (t.scrollHeight) + "px";
+        });
+    }, 200);
+
     document.getElementById("rphBesarOverlay").classList.add("active");
 }
 
@@ -1029,31 +1008,6 @@ function simpanDataDariFloatedOverlay() {
     }
 
     alert("Perubahan data RPH berjaya disimpan secara terus! 💾");
-}
-
-function selectProfile(teacherName, isAuto = false) {
-    semasaGuru = teacherName;
-    localStorage.setItem("semasaGuru", teacherName); 
-    const pScreen = document.getElementById("profileScreen");
-    const mainApp = document.getElementById("mainApp");
-    if(isAuto) {
-        pScreen.style.display = "none";
-        mainApp.style.display = "block";
-        mainApp.style.opacity = "1";
-    } else {
-        pScreen.style.opacity = "0";
-        setTimeout(() => {
-            pScreen.style.visibility = "hidden";
-            mainApp.style.display = "block";
-            setTimeout(() => { mainApp.style.opacity = "1"; }, 50);
-        }, 500);
-    }
-    document.getElementById("userWelcome").innerHTML = "✨ Log Masuk Sebagai: <strong>" + teacherName + "</strong>";
-}
-
-function changeProfileBtn() {
-    localStorage.removeItem("semasaGuru"); 
-    location.reload(); 
 }
 
 function updateJadual(){
@@ -1103,19 +1057,15 @@ function generateWeek(){
                             <td class="slot-id-${num}">${jadualHariIni[num-1][0]}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${jadualHariIni[num-1][1]}</span></td>
                             <td>
                                 <textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea>
-                                <div class="pdf-text-replacement" id="pdf-sp-${d}-${num}"></div>
                             </td>
                             <td>
                                 <textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea>
-                                <div class="pdf-text-replacement" id="pdf-op-${d}-${num}"></div>
                             </td>
                             <td>
                                 <textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea>
-                                <div class="pdf-text-replacement" id="pdf-ak-${d}-${num}"></div>
                             </td>
                             <td>
                                 <textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea>
-                                <div class="pdf-text-replacement" id="pdf-ct-${d}-${num}"></div>
                             </td>
                         </tr>
                         ${num === 3 ? '<tr class="yellow-row"><td colspan="5">9.30 – 10.00 REHAT</td></tr>' : ''}
@@ -1160,7 +1110,8 @@ function simpanDanBukaUrusRPH() {
             minggu: mingguInfo || "Semasa",
             mula: tarikhMula || "[Belum Diisi]",
             akhir: tarikhAkhir || "[Belum Diisi]",
-            guru: semasaGuru
+            guru: semasaGuru,
+            kelas: semasaKelas
         }
     };
 
@@ -1186,7 +1137,7 @@ function kemaskiniSenaraiOverlayRPH() {
             susunanKadListHTML += `
                 <div class="rph-record-card" id="card-${item.id}">
                     <div class="rph-record-info">
-                        <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${item.meta.minggu} (${item.meta.guru})</span>
+                        <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${item.meta.minggu} (${item.meta.guru} - ${item.meta.kelas || semasaKelas})</span>
                         <span style="font-size: 13px; color: #e74c3c; font-weight:600;">📅 ${item.meta.mula} hingga ${item.meta.akhir}</span>
                     </div>
                     <div style="display: flex; gap: 8px;">
@@ -1221,120 +1172,13 @@ function cancelRPHGeneration() {
     }
 }
 
-// Auto-expand textarea secara dinamik
+// Logik menolak tinggi baris input secara dinamik mengikut panjang teks ditaip
 document.addEventListener("input", function(e){
     if(e.target.tagName.toLowerCase() === "textarea"){
         e.target.style.height = "auto";
         e.target.style.height = (e.target.scrollHeight) + "px";
     }
 });
-
-// Fungsi Bersepadu untuk Kongsi (Share API) ATAU Muat Turun Secara Terus
-function kongsiRPHKeWhatsAppAtauLain(tindakan = 'share') {
-    const element = document.getElementById("floatedRphInjectArea");
-    
-    // SINKRONISASI DATA TEXTAREA KE DIV REPLACEMENT SEBELUM JANA PDF (Bagi mengelakkan isu teks terkeluar/terpotong)
-    const textareas = element.querySelectorAll('textarea');
-    textareas.forEach(ta => {
-        const divId = "pdf-" + ta.id;
-        const replacementDiv = element.querySelector("#" + divId);
-        if (replacementDiv) {
-            replacementDiv.innerText = ta.value; // Pindahkan isi teks ke elemen HTML biasa
-        }
-    });
-
-    const inputs = element.querySelectorAll('input[type="text"]');
-    inputs.forEach(inp => {
-        inp.setAttribute('value', inp.value);
-    });
-
-    let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
-    let rphDipilih = senaraiRph.find(item => item.id === idRphAktif);
-    let namaMinggu = rphDipilih ? "Minggu_" + rphDipilih.meta.minggu : "Semasa";
-
-    const tajukFail = `RPH_${namaMinggu}_(${semasaGuru})_${modPaparanSemasa}.pdf`;
-
-    const opsi = {
-        margin:       [10, 10, 10, 10],
-        filename:     tajukFail,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-        pagebreak:    { mode: ['css', 'legacy'] }
-    };
-
-    const butangShare = document.getElementById("btnEksportPDF");
-    const butangMuatTurun = document.getElementById("btnMuatTurunPDF");
-    
-    const teksAsalShare = butangShare.innerText;
-    const teksAsalDownload = butangMuatTurun.innerText;
-
-    butangShare.disabled = true;
-    butangMuatTurun.disabled = true;
-    
-    if(tindakan === 'share') {
-        butangShare.innerText = "⏳ Memproses...";
-    } else {
-        butangMuatTurun.innerText = "⏳ Memproses...";
-    }
-
-    if (tindakan === 'download') {
-        // Melakukan muat turun PDF secara langsung tanpa menggunakan Web Share API
-        html2pdf().set(opsi).from(element).save().then(() => {
-            butangShare.disabled = false;
-            butangMuatTurun.disabled = false;
-            butangShare.innerText = teksAsalShare;
-            butangMuatTurun.innerText = teksAsalDownload;
-        }).catch((err) => {
-            console.error(err);
-            butangShare.disabled = false;
-            butangMuatTurun.disabled = false;
-            butangShare.innerText = teksAsalShare;
-            butangMuatTurun.innerText = teksAsalDownload;
-        });
-    } else {
-        // Proses Perkongsian Fail (Web Share API)
-        html2pdf().set(opsi).from(element).outputPdf('blob').then((pdfBlob) => {
-            const fileRph = new File([pdfBlob], tajukFail, { type: 'application/pdf' });
-
-            if (navigator.canShare && navigator.canShare({ files: [fileRph] })) {
-                navigator.share({
-                    files: [fileRph],
-                    title: `Kongsian ${tajukFail}`,
-                    text: `Berikut disertakan fail PDF untuk Rancangan Pengajaran Harian bagi paparan mod: ${modPaparanSemasa}.`
-                })
-                .then(() => {
-                    butangShare.disabled = false;
-                    butangMuatTurun.disabled = false;
-                    butangShare.innerText = teksAsalShare;
-                    butangMuatTurun.innerText = teksAsalDownload;
-                })
-                .catch((ralatShare) => {
-                    butangShare.disabled = false;
-                    butangMuatTurun.disabled = false;
-                    butangShare.innerText = teksAsalShare;
-                    butangMuatTurun.innerText = teksAsalDownload;
-                    console.log("Perkongsian dibatalkan oleh guru.");
-                });
-            } else {
-                alert("Sistem perkongsian langsung tidak disokong pada pelayar ini.\nFail PDF akan dimuat turun secara automatik ke peranti anda.");
-                html2pdf().set(opsi).from(element).save().then(() => {
-                    butangShare.disabled = false;
-                    butangMuatTurun.disabled = false;
-                    butangShare.innerText = teksAsalShare;
-                    butangMuatTurun.innerText = teksAsalDownload;
-                });
-            }
-        }).catch((ralatProses) => {
-            butangShare.disabled = false;
-            butangMuatTurun.disabled = false;
-            butangShare.innerText = teksAsalShare;
-            butangMuatTurun.innerText = teksAsalDownload;
-            console.error("Ralat pemprosesan fail:", ralatProses);
-            alert("Gagal memproses fail perkongsian PDF.");
-        });
-    }
-}
 </script>
 
 </body>
