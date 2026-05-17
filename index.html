@@ -428,6 +428,7 @@ table {
     border-collapse: separate;
     border-spacing: 0 8px;
     min-width: 800px;
+    table-layout: fixed; /* Mengekang kelebaran sel agar mengikut peratusan th */
 }
 
 th {
@@ -446,6 +447,7 @@ td {
     border-top: 1px solid rgba(0, 0, 0, 0.03);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     vertical-align: top;
+    word-break: break-word; /* Mengelakkan perkataan panjang merosakkan layout table */
 }
 
 td:first-child {
@@ -499,6 +501,19 @@ input:focus, select:focus, textarea:focus {
 textarea {
     height: 80px;
     resize: vertical;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Elemen teks gantian sementara semasa mod PDF/Eksport */
+.pdf-text-replacement {
+    display: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+    color: #000000;
+    line-height: 1.4;
+    padding: 2px;
 }
 
 /* --- FLOATED STICKY CONTROL BAR (RE-DESIGNED FOR MOBILE) --- */
@@ -558,6 +573,13 @@ button.btn-save {
     box-shadow: 0 6px 15px rgba(9, 132, 227, 0.2);
 }
 
+button.btn-pdf {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.2);
+}
+
 button.btn-cancel {
     background: #d63031;
     border: none;
@@ -612,15 +634,22 @@ button.btn-cancel {
 
 .html2pdf-pdf-mode table {
     min-width: 100% !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.html2pdf-pdf-mode td {
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
 }
 
 .html2pdf-pdf-mode input, 
 .html2pdf-pdf-mode textarea {
-    background: transparent !important;
-    border: none !important;
-    padding: 2px !important;
-    color: #000000 !important;
-    font-size: 12px !important;
+    display: none !important; /* Sorokkan elemen input sebenar semasa bina PDF */
+}
+
+.html2pdf-pdf-mode .pdf-text-replacement {
+    display: block !important; /* Paparkan teks asal bertulis penuh ke bawah */
 }
 
 /* --- PENAMBAHAN MEDIA QUERIES KHAS MOBILES (EXTRA CODES) --- */
@@ -676,9 +705,11 @@ button.btn-cancel {
     body { background-color: #fff; color: #000; padding: 0; }
     #profileScreen, .floated-menu-bar, .schedule-overlay-backdrop, .action-buttons-group, .main-title, .welcome-banner { display: none !important; }
     .print-block { background: #fff !important; color: #000 !important; border: none !important; box-shadow: none !important; page-break-after: always; padding: 0; margin: 0 0 30px 0; }
-    table { border-spacing: 0; min-width: 100% !important; }
-    td { background: transparent !important; color: #000 !important; border: 1px solid #000 !important; }
+    table { border-spacing: 0; min-width: 100% !important; table-layout: fixed !important; }
+    td { background: transparent !important; color: #000 !important; border: 1px solid #000 !important; word-break: break-word !important; }
     .table-responsive { overflow-x: visible !important; }
+    textarea, input { display: none !important; }
+    .pdf-text-replacement { display: block !important; }
 }
 </style>
 </head>
@@ -723,7 +754,7 @@ button.btn-cancel {
         <button class="btn-trigger-rph" onclick="openRPHOverlay()">📝 Urus Rancangan Pengajaran Harian (RPH)</button>
     </div>
 
-    <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK (DENGAN INTEGRASI HARI DARI KOD ASAL) -->
+    <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK -->
     <div id="scheduleOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel">
             <div class="wide-panel-header">
@@ -731,7 +762,6 @@ button.btn-cancel {
                 <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
             </div>
             
-            <!-- Bahagian Pilihan Hari Automatik dari Coding Lama -->
             <div style="margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: var(--border-radius-sm); border: 1px solid #e2e8f0;">
                 <label style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; display: block;">Pilih Hari Untuk Diubahsuai:</label>
                 <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" style="max-width: 300px; background: #ffffff; border: 1px solid #cbd5e1;">
@@ -780,7 +810,7 @@ button.btn-cancel {
         </div>
     </div>
 
-    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA (KEKALKAN MASTER ARRAY) -->
+    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA -->
     <div id="rphOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel" style="max-width: 1100px;">
             <div class="wide-panel-header">
@@ -819,7 +849,7 @@ button.btn-cancel {
         </div>
     </div>
 
-    <!-- 4. FLOATED OVERLAY JADUAL BESAR -->
+    <!-- 4. FLOATED OVERLAY JADUAL BESAR (LIHAT / SUNTING) -->
     <div id="rphBesarOverlay" class="schedule-overlay-backdrop" style="z-index: 40000;">
         <div class="rph-display-panel">
             
@@ -827,8 +857,9 @@ button.btn-cancel {
                 <div class="header-left-group">
                     <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
                     <div class="header-buttons-group">
-                        <button class="btn-primary" style="background: linear-gradient(135deg, #25d366, #128c7e);" id="btnEksportPDF" onclick="kongsiRPHKeWhatsAppAtauLain()">🔗 Kongsi RPH (PDF)</button>
-                        <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan</button>
+                        <button class="btn-primary" style="background: linear-gradient(135deg, #25d366, #128c7e);" id="btnEksportPDF" onclick="kongsiRPHKeWhatsAppAtauLain('share')">🔗 Kongsi RPH (PDF)</button>
+                        <button class="btn-pdf" id="btnMuatTurunPDF" onclick="kongsiRPHKeWhatsAppAtauLain('download')">📥 Muat Turun PDF</button>
+                        <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
                     </div>
                 </div>
                 <div class="wide-panel-close" onclick="tutupRphBesarOverlay()">&times;</div>
@@ -886,7 +917,7 @@ window.onload = function() {
     kemaskiniSenaraiOverlayRPH();
 };
 
-// Fungsi Memuatkan Data Input Masa & Subjek Berdasarkan Hari yang dipilih (Dari Kod Lama)
+// Fungsi Memuatkan Data Input Masa & Subjek Berdasarkan Hari yang dipilih
 function loadJadualEditBerdasarkanHari() {
     let hariDipilih = document.getElementById("hariPilihanJadual").value;
     let dataHari = pangkalanJadualInduk[hariDipilih];
@@ -1025,7 +1056,6 @@ function changeProfileBtn() {
     location.reload(); 
 }
 
-// Mengemaskini dan Menyimpan Jadual Mengikut Hari Khusus ke dalam LocalStorage
 function updateJadual(){
     let hariDipilih = document.getElementById("hariPilihanJadual").value;
     
@@ -1039,14 +1069,13 @@ function updateJadual(){
     alert("Jadual bagi hari " + hariDipilih + " berjaya disimpan!");
 }
 
-// Menjana RPH Seminggu Secara Dinamik dengan Tarikan Data Jadual Berasingan Setiap Hari
 function generateWeek(){
     let days = ["Isnin","Selasa","Rabu","Khamis","Jumaat"];
     let content = "";
     
     for(let d=0; d<days.length; d++){
         let hariIni = days[d];
-        let jadualHariIni = pangkalanJadualInduk[hariIni]; // Mengambil jadual spesifik hari tersebut
+        let jadualHariIni = pangkalanJadualInduk[hariIni];
 
         content += `
         <div class="floating-card print-block" data-day="${hariIni}" id="rph-card-${hariIni}">
@@ -1061,10 +1090,10 @@ function generateWeek(){
                 <table>
                     <thead>
                         <tr class="purple-header">
-                            <th style="width: 20%;">MASA / TUNJANG</th>
+                            <th style="width: 18%;">MASA / TUNJANG</th>
                             <th style="width: 20%;">STANDARD PEMBELAJARAN</th>
                             <th style="width: 20%;">OBJEKTIF PEMBELAJARAN</th>
-                            <th style="width: 25%;">AKTIVITI</th>
+                            <th style="width: 27%;">AKTIVITI</th>
                             <th style="width: 15%;">ABM / CATATAN</th>
                         </tr>
                     </thead>
@@ -1072,10 +1101,22 @@ function generateWeek(){
                         ${[1,2,3,4,5,6,7].map(num => `
                         <tr>
                             <td class="slot-id-${num}">${jadualHariIni[num-1][0]}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${jadualHariIni[num-1][1]}</span></td>
-                            <td><textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
-                            <td><textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
-                            <td><textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
-                            <td><textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea></td>
+                            <td>
+                                <textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <div class="pdf-text-replacement" id="pdf-sp-${d}-${num}"></div>
+                            </td>
+                            <td>
+                                <textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <div class="pdf-text-replacement" id="pdf-op-${d}-${num}"></div>
+                            </td>
+                            <td>
+                                <textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <div class="pdf-text-replacement" id="pdf-ak-${d}-${num}"></div>
+                            </td>
+                            <td>
+                                <textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <div class="pdf-text-replacement" id="pdf-ct-${d}-${num}"></div>
+                            </td>
                         </tr>
                         ${num === 3 ? '<tr class="yellow-row"><td colspan="5">9.30 – 10.00 REHAT</td></tr>' : ''}
                         `).join('')}
@@ -1180,7 +1221,7 @@ function cancelRPHGeneration() {
     }
 }
 
-// Auto-expand textarea secara dinamik (Diambil dari Kod Lama)
+// Auto-expand textarea secara dinamik
 document.addEventListener("input", function(e){
     if(e.target.tagName.toLowerCase() === "textarea"){
         e.target.style.height = "auto";
@@ -1188,9 +1229,25 @@ document.addEventListener("input", function(e){
     }
 });
 
-function kongsiRPHKeWhatsAppAtauLain() {
+// Fungsi Bersepadu untuk Kongsi (Share API) ATAU Muat Turun Secara Terus
+function kongsiRPHKeWhatsAppAtauLain(tindakan = 'share') {
     const element = document.getElementById("floatedRphInjectArea");
     
+    // SINKRONISASI DATA TEXTAREA KE DIV REPLACEMENT SEBELUM JANA PDF (Bagi mengelakkan isu teks terkeluar/terpotong)
+    const textareas = element.querySelectorAll('textarea');
+    textareas.forEach(ta => {
+        const divId = "pdf-" + ta.id;
+        const replacementDiv = element.querySelector("#" + divId);
+        if (replacementDiv) {
+            replacementDiv.innerText = ta.value; // Pindahkan isi teks ke elemen HTML biasa
+        }
+    });
+
+    const inputs = element.querySelectorAll('input[type="text"]');
+    inputs.forEach(inp => {
+        inp.setAttribute('value', inp.value);
+    });
+
     let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
     let rphDipilih = senaraiRph.find(item => item.id === idRphAktif);
     let namaMinggu = rphDipilih ? "Minggu_" + rphDipilih.meta.minggu : "Semasa";
@@ -1207,41 +1264,76 @@ function kongsiRPHKeWhatsAppAtauLain() {
     };
 
     const butangShare = document.getElementById("btnEksportPDF");
-    const teksAsal = butangShare.innerText;
-    butangShare.innerText = "⏳ Memproses...";
+    const butangMuatTurun = document.getElementById("btnMuatTurunPDF");
+    
+    const teksAsalShare = butangShare.innerText;
+    const teksAsalDownload = butangMuatTurun.innerText;
+
     butangShare.disabled = true;
+    butangMuatTurun.disabled = true;
+    
+    if(tindakan === 'share') {
+        butangShare.innerText = "⏳ Memproses...";
+    } else {
+        butangMuatTurun.innerText = "⏳ Memproses...";
+    }
 
-    html2pdf().set(opsi).from(element).outputPdf('blob').then((pdfBlob) => {
-        const fileRph = new File([pdfBlob], tajukFail, { type: 'application/pdf' });
+    if (tindakan === 'download') {
+        // Melakukan muat turun PDF secara langsung tanpa menggunakan Web Share API
+        html2pdf().set(opsi).from(element).save().then(() => {
+            butangShare.disabled = false;
+            butangMuatTurun.disabled = false;
+            butangShare.innerText = teksAsalShare;
+            butangMuatTurun.innerText = teksAsalDownload;
+        }).catch((err) => {
+            console.error(err);
+            butangShare.disabled = false;
+            butangMuatTurun.disabled = false;
+            butangShare.innerText = teksAsalShare;
+            butangMuatTurun.innerText = teksAsalDownload;
+        });
+    } else {
+        // Proses Perkongsian Fail (Web Share API)
+        html2pdf().set(opsi).from(element).outputPdf('blob').then((pdfBlob) => {
+            const fileRph = new File([pdfBlob], tajukFail, { type: 'application/pdf' });
 
-        if (navigator.canShare && navigator.canShare({ files: [fileRph] })) {
-            navigator.share({
-                files: [fileRph],
-                title: `Kongsian ${tajukFail}`,
-                text: `Berikut disertakan fail PDF untuk Rancangan Pengajaran Harian bagi paparan mod: ${modPaparanSemasa}.`
-            })
-            .then(() => {
-                butangShare.innerText = teksAsal;
-                butangShare.disabled = false;
-            })
-            .catch((ralatShare) => {
-                butangShare.innerText = teksAsal;
-                butangShare.disabled = false;
-                console.log("Perkongsian dibatalkan oleh guru.");
-            });
-        } else {
-            alert("Sistem perkongsian langsung tidak disokong pada pelayar ini.\nFail PDF akan dimuat turun secara automatik ke peranti anda.");
-            html2pdf().set(opsi).from(element).save().then(() => {
-                butangShare.innerText = teksAsal;
-                butangShare.disabled = false;
-            });
-        }
-    }).catch((ralatProses) => {
-        butangShare.innerText = teksAsal;
-        butangShare.disabled = false;
-        console.error("Ralat pemprosesan fail:", ralatProses);
-        alert("Gagal memproses fail perkongsian PDF.");
-    });
+            if (navigator.canShare && navigator.canShare({ files: [fileRph] })) {
+                navigator.share({
+                    files: [fileRph],
+                    title: `Kongsian ${tajukFail}`,
+                    text: `Berikut disertakan fail PDF untuk Rancangan Pengajaran Harian bagi paparan mod: ${modPaparanSemasa}.`
+                })
+                .then(() => {
+                    butangShare.disabled = false;
+                    butangMuatTurun.disabled = false;
+                    butangShare.innerText = teksAsalShare;
+                    butangMuatTurun.innerText = teksAsalDownload;
+                })
+                .catch((ralatShare) => {
+                    butangShare.disabled = false;
+                    butangMuatTurun.disabled = false;
+                    butangShare.innerText = teksAsalShare;
+                    butangMuatTurun.innerText = teksAsalDownload;
+                    console.log("Perkongsian dibatalkan oleh guru.");
+                });
+            } else {
+                alert("Sistem perkongsian langsung tidak disokong pada pelayar ini.\nFail PDF akan dimuat turun secara automatik ke peranti anda.");
+                html2pdf().set(opsi).from(element).save().then(() => {
+                    butangShare.disabled = false;
+                    butangMuatTurun.disabled = false;
+                    butangShare.innerText = teksAsalShare;
+                    butangMuatTurun.innerText = teksAsalDownload;
+                });
+            }
+        }).catch((ralatProses) => {
+            butangShare.disabled = false;
+            butangMuatTurun.disabled = false;
+            butangShare.innerText = teksAsalShare;
+            butangMuatTurun.innerText = teksAsalDownload;
+            console.error("Ralat pemprosesan fail:", ralatProses);
+            alert("Gagal memproses fail perkongsian PDF.");
+        });
+    }
 }
 </script>
 
