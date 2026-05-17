@@ -32,17 +32,17 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px 15px 160px 15px;
+    padding: 20px 15px 180px 15px;
 }
 
-/* --- FIRST TIME SETUP PROFILE SCREEN --- */
+/* --- FIRST TIME SETUP PROFILE SCREEN (PREMIUM DESIGN) --- */
 #profileScreen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #ffffff 0%, #e8f0fe 100%);
+    background: radial-gradient(circle at top left, #feeff0 0%, #e8f0fe 100%);
     z-index: 10000;
     display: flex;
     flex-direction: column;
@@ -55,34 +55,59 @@ body {
 
 .setup-card {
     background: #ffffff;
-    padding: 30px;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    padding: 35px 30px;
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(255, 118, 117, 0.12), 0 10px 20px rgba(0, 0, 0, 0.03);
     width: 100%;
-    max-width: 450px;
+    max-width: 440px;
     box-sizing: border-box;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    position: relative;
+}
+
+.profile-avatar-badge {
+    width: 76px;
+    height: 76px;
+    background: linear-gradient(135deg, #ff7675, #ff9f43);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    color: white;
+    margin: 0 auto 15px auto;
+    box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3);
 }
 
 .profile-title {
     font-size: 24px;
     font-weight: 800;
-    margin-bottom: 10px;
+    margin: 0 0 6px 0;
     color: #2c3e50;
     letter-spacing: -0.5px;
 }
 
+.profile-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #95a5a6;
+    margin: 0 0 25px 0;
+    line-height: 1.4;
+}
+
 .form-group {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .form-group label {
     font-size: 13px;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 800;
+    color: #34495e;
     margin-bottom: 8px;
     display: block;
+    letter-spacing: 0.2px;
 }
 
 .input-container-prefix {
@@ -93,22 +118,59 @@ body {
 
 .input-prefix {
     position: absolute;
-    left: 12px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--primary-color);
+    left: 16px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ff7675;
     user-select: none;
     pointer-events: none;
 }
 
 .input-with-prefix {
-    padding-left: 60px !important;
+    padding-left: 68px !important;
     font-weight: 700;
     text-transform: capitalize;
 }
 
-.capitalize-input {
-    text-transform: capitalize;
+.setup-card input[type="text"] {
+    width: 100%;
+    background-color: #f1f5f8;
+    color: #2c3e50;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.setup-card input[type="text"]:focus {
+    outline: none;
+    border-color: #ff7675;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 5px rgba(255, 118, 117, 0.15);
+}
+
+.btn-profile-submit {
+    background: linear-gradient(135deg, #ff7675 0%, #ef5756 100%);
+    color: #ffffff !important;
+    border: none;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 16px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(239, 87, 86, 0.25);
+    transition: all 0.25s ease;
+    margin-top: 5px;
+}
+
+.btn-profile-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(239, 87, 86, 0.35);
 }
 
 #mainApp {
@@ -119,23 +181,23 @@ body {
 
 .main-title {
     text-align: center;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 10px;
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
 .welcome-banner {
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #1dd1a1;
     background: rgba(29, 209, 161, 0.1);
-    padding: 8px 20px;
+    padding: 8px 16px;
     border-radius: 20px;
     display: table;
-    margin: 0 auto 30px auto;
+    margin: 0 auto 25px auto;
 }
 
 .action-buttons-group {
@@ -144,37 +206,32 @@ body {
     gap: 12px;
     align-items: center;
     margin-bottom: 35px;
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
-.btn-trigger-jadual {
-    background: linear-gradient(135deg, #74b9ff, #0984e3);
+.btn-trigger-jadual, .btn-trigger-rph {
     color: white;
     border: none;
     padding: 14px 24px;
     font-size: 14px;
     font-weight: 700;
     border-radius: 40px;
-    box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2);
     width: 100%;
     max-width: 380px;
     cursor: pointer;
     transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+.btn-trigger-jadual {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2);
 }
 
 .btn-trigger-rph {
     background: linear-gradient(135deg, #a8ff78, #78ffd6);
     color: #2c3e50;
-    border: none;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 40px;
     box-shadow: 0 10px 20px rgba(120, 255, 214, 0.3);
-    width: 100%;
-    max-width: 380px;
-    cursor: pointer;
-    transition: all 0.25s ease;
 }
 
 /* --- FLOATED OVERLAY SCREEN PANEL --- */
@@ -203,38 +260,25 @@ body {
     visibility: visible;
 }
 
-.wide-schedule-panel {
+.wide-schedule-panel, .rph-display-panel {
     background: #ffffff;
     width: 100%; 
-    max-width: 1300px; 
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto;
     border-radius: var(--border-radius-lg);
     box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-    padding: 20px;
+    padding: 20px 15px;
     box-sizing: border-box;
-    transform: translateY(30px);
+    transform: translateY(20px);
     transition: all 0.3s ease;
 }
 
-/* --- OVERLAY PAPARAN RPH --- */
-.rph-display-panel {
-    background: #ffffff;
-    width: 100%; 
-    max-width: 1200px;
-    height: 90vh;
-    overflow-y: auto;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 30px 70px rgba(0,0,0,0.3);
-    padding: 20px;
-    box-sizing: border-box;
-    transform: scale(0.95);
-    transition: all 0.3s ease;
-}
+.wide-schedule-panel { max-width: 1300px; }
+.rph-display-panel { max-width: 1200px; }
 
 .schedule-overlay-backdrop.active .wide-schedule-panel,
 .schedule-overlay-backdrop.active .rph-display-panel {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
 }
 
 /* --- MINI FLOATED OVERLAY --- */
@@ -247,32 +291,15 @@ body {
     padding: 25px 20px;
     box-sizing: border-box;
     text-align: center;
-    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes popUp {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.wide-panel-header {
+.wide-panel-header, .rph-besar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     border-bottom: 2px solid #f1f2f6;
     padding-bottom: 12px;
-}
-
-.rph-besar-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #f1f2f6;
-    padding-bottom: 15px;
 }
 
 .header-left-group {
@@ -283,20 +310,11 @@ body {
     flex: 1;
 }
 
-.header-buttons-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
 .wide-panel-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--text-primary);
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .wide-panel-close {
@@ -304,13 +322,12 @@ body {
     font-weight: 700;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: color 0.2s;
     padding: 0 5px;
 }
 
 .horizontal-schedule-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
     gap: 15px;
     margin-bottom: 25px;
 }
@@ -360,21 +377,18 @@ body {
     color: var(--text-primary);
     margin-top: 0;
     margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .rph-list-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .rph-record-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -382,7 +396,7 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
     .rph-record-card {
         flex-direction: row;
         justify-content: space-between;
@@ -393,7 +407,7 @@ body {
 .rph-record-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 4px;
 }
 
 /* --- FLOATING MODERN CARD --- */
@@ -401,26 +415,21 @@ body {
     background: var(--bg-card);
     border: 1px solid rgba(0, 0, 0, 0.02);
     border-radius: var(--border-radius-lg);
-    padding: 20px;
+    padding: 15px;
     box-shadow: var(--shadow-floating);
     margin-bottom: 25px;
 }
 
-/* --- TABLES & RESPONSIVE WRAPPER --- */
+/* --- TABLES & RESPONSIVE HUB --- */
 .table-responsive {
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     margin-bottom: 15px;
     border-radius: var(--border-radius-sm);
-    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 900px;
-    table-layout: fixed; 
 }
 
 th {
@@ -428,7 +437,7 @@ th {
     padding: 12px 10px;
     text-align: left;
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     border-bottom: 2px solid rgba(0,0,0,0.05);
@@ -436,12 +445,11 @@ th {
 
 td {
     background: var(--bg-card);
-    padding: 12px 10px;
+    padding: 10px;
     font-size: 13px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     vertical-align: top;
-    word-break: break-word; 
-    overflow: visible;
+    word-break: break-word;
 }
 
 td:first-child {
@@ -451,19 +459,6 @@ td:first-child {
 
 .purple-header th { color: #8e44ad; }
 
-.yellow-row td {
-    background: linear-gradient(90deg, rgba(254, 202, 87, 0.15) 0%, rgba(254, 202, 87, 0.02) 100%) !important;
-    color: #f39c12;
-    font-weight: 800;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 11px;
-    border: 1px solid rgba(254, 202, 87, 0.2);
-    padding: 10px !important;
-}
-
-/* 🔥 KUNCI MATI TEXTAREA JADUAL UTAMA (ANTI-TERPOTONG / TERSEMUNYI KETEPI) */
 textarea {
     width: 100%;
     background-color: var(--bg-input);
@@ -475,10 +470,8 @@ textarea {
     font-family: inherit;
     font-size: 13px;
     transition: all 0.25s ease;
-    height: 90px;
+    height: 80px;
     resize: vertical;
-    
-    /* Aturan Penyalamat Semasa Menaip Draf */
     white-space: pre-wrap !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
@@ -492,34 +485,47 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 4px rgba(255, 118, 117, 0.1);
 }
 
+/* --- BUTTON MOBILE FLOATED LANDSCAPE --- */
+#btnMobileLandscapeTrigger {
+    display: none;
+    background: linear-gradient(135deg, #9c88ff, #786fa6);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(156, 136, 255, 0.3);
+}
+
 /* --- FLOATED STICKY CONTROL BAR --- */
 .floated-menu-bar {
     position: fixed;
-    bottom: 15px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 10px 15px;
-    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 10px 12px;
+    border-radius: 24px;
     display: flex;
-    gap: 8px;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    gap: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     z-index: 999;
-    width: 90%;
-    max-width: 550px;
+    width: 92%;
+    max-width: 500px;
     box-sizing: border-box;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 button {
     background: #ffffff;
     color: var(--text-primary);
     border: 1px solid rgba(0, 0, 0, 0.08);
-    padding: 10px 16px;
+    padding: 10px 14px;
     font-size: 12px;
     font-weight: 700;
     border-radius: 30px;
@@ -530,35 +536,12 @@ button {
     text-align: center;
 }
 
-button:hover {
-    background: #f4f7f6;
-    transform: translateY(-2px);
-}
+button:hover { background: #f4f7f6; }
+button.btn-primary { background: var(--primary-color); border: none; color: #ffffff; }
+button.btn-save { background: var(--share-color); border: none; color: #ffffff; }
+button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 
-button.btn-primary {
-    background: var(--primary-color);
-    border: none;
-    color: #ffffff;
-    box-shadow: 0 6px 15px rgba(255, 118, 117, 0.2);
-}
-
-button.btn-save {
-    background: var(--share-color);
-    border: none;
-    color: #ffffff;
-    box-shadow: 0 6px 15px rgba(9, 132, 227, 0.2);
-}
-
-button.btn-cancel {
-    background: #d63031;
-    border: none;
-    color: #ffffff;
-    box-shadow: 0 6px 15px rgba(214, 48, 49, 0.2);
-}
-
-.dynamic-action-btn {
-    display: none;
-}
+.dynamic-action-btn { display: none; }
 
 .meta-grid {
     display: grid;
@@ -567,64 +550,107 @@ button.btn-cancel {
     margin-bottom: 15px;
 }
 
-@media (min-width: 768px) {
-    .meta-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
 .meta-cell {
     background: #f8fafc;
-    border: 1px solid rgba(0, 0, 0, 0.01);
-    padding: 10px;
+    padding: 8px 12px;
     border-radius: var(--border-radius-sm);
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.meta-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    font-weight: 700;
-}
+/* ==========================================================================
+   📱 MOBILE VIEW BREAKPOINT & LOGIK RESPONSIVE LANDSCAPE COUPE
+   ========================================================================== */
+@media (max-width: 768px) {
+    .main-title { font-size: 20px; }
+    #btnMobileLandscapeTrigger { display: inline-block; } /* Aktifkan hanya pada mobile view */
+    
+    table, thead, tbody, th, td, tr { 
+        display: block; 
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    thead { display: none; }
+    
+    tr {
+        margin-bottom: 20px;
+        border: 1px solid #cbd5e1;
+        border-radius: var(--border-radius-sm);
+        padding: 10px;
+        background: #ffffff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    }
+    
+    tr.yellow-row {
+        background: #fff9db !important;
+        border-color: #f59f00;
+        text-align: center;
+        font-weight: 800;
+    }
+    
+    tr.yellow-row td {
+        border: none !important;
+        color: #f59f00;
+        padding: 8px !important;
+    }
 
-@media (max-width: 576px) {
-    .container {
-        padding-bottom: 220px;
+    td {
+        border: none !important;
+        padding: 8px 0 !important;
+        position: relative;
     }
-    .wide-schedule-panel, .rph-display-panel {
-        padding: 15px 10px;
+    
+    td:first-child {
+        font-size: 14px;
+        color: var(--primary-color);
+        border-bottom: 2px dashed #e2e8f0 !important;
+        padding-bottom: 6px !important;
+        margin-bottom: 10px;
     }
-    .wide-panel-title {
-        font-size: 16px;
-    }
-    .rph-besar-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .header-left-group {
-        width: 100%;
-        justify-content: space-between;
-    }
-    .header-buttons-group {
-        width: 100%;
-    }
-    .header-buttons-group button {
-        font-size: 11px;
-        padding: 8px 10px;
-    }
+
+    td:nth-child(2)::before { content: "🎯 Standard Pembelajaran:"; font-weight: 700; display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-secondary); }
+    td:nth-child(3)::before { content: "💡 Objektif Pembelajaran:"; font-weight: 700; display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-secondary); }
+    td:nth-child(4)::before { content: "🏃 Aktiviti:"; font-weight: 700; display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-secondary); }
+    td:nth-child(5)::before { content: "📌 ABM / Catatan / Nota:"; font-weight: 700; display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-secondary); }
+    
     .floated-menu-bar {
-        padding: 8px 10px;
-        border-radius: 20px;
-        bottom: 10px;
+        padding: 8px;
+        bottom: 8px;
+        border-radius: 16px;
     }
+    
     button {
-        padding: 8px 12px;
+        padding: 10px 8px;
         font-size: 11px;
     }
+
+    /* 🔥 FORCE REALTIME ROTATION LANDSCAPE VIA CSS FOR MOBILE VIEW ONLY */
+    .forced-landscape-active {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vh !important;
+        height: 100vw !important;
+        max-height: 100vw !important;
+        background: #ffffff !important;
+        z-index: 999999 !important;
+        transform: rotate(90deg) translate(0, -100vh) !important;
+        transform-origin: top left !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Pulihkan semula struktur asal baris jadual desktop ketika mod pusingan landscape diaktifkan */
+    .forced-landscape-active table { display: table !important; min-width: 850px !important; }
+    .forced-landscape-active thead { display: table-header-group !important; }
+    .forced-landscape-active tbody { display: table-row-group !important; }
+    .forced-landscape-active tr { display: table-row !important; background: transparent !important; border: none !important; box-shadow: none !important; }
+    .forced-landscape-active td, .forced-landscape-active th { display: table-cell !important; border: 1px solid rgba(0, 0, 0, 0.08) !important; padding: 8px 5px !important; }
+    .forced-landscape-active td::before { display: none !important; }
+    .forced-landscape-active td:first-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important; padding-bottom: 8px !important; margin-bottom: 0; font-size: 13px; }
 }
 </style>
 </head>
@@ -634,22 +660,24 @@ button.btn-cancel {
 <!-- FLOATED FIRST-TIME SETUP PROFILE SCREEN -->
 <div id="profileScreen">
     <div class="setup-card">
-        <div class="profile-title">Tetapkan profil anda</div>
+        <div class="profile-avatar-badge">👩‍🏫</div>
+        <div class="profile-title">Profil Pengguna</div>
+        <div class="profile-subtitle">Sila tetapkan nama panggilan dan nama kelas anda bagi sistem pengurusan RPH tadika.</div>
         
         <div class="form-group">
-            <label>Nama Panggilan:</label>
+            <label>Nama Panggilan Guru:</label>
             <div class="input-container-prefix">
                 <span class="input-prefix">Cikgu </span>
-                <input type="text" id="setupNickname" class="input-with-prefix" placeholder="Taip nama anda di sini..." oninput="autoCapitalizeWords(this)">
+                <input type="text" id="setupNickname" class="input-with-prefix" placeholder="Taip nama anda..." oninput="autoCapitalizeWords(this)">
             </div>
         </div>
 
         <div class="form-group">
-            <label>Nama Kelas :</label>
-            <input type="text" id="setupClassName" class="capitalize-input" placeholder="Contoh: Al-Fatih / Genius / 5 Tahun" oninput="autoCapitalizeWords(this)">
+            <label>Nama Kelas Prasekolah:</label>
+            <input type="text" id="setupClassName" class="capitalize-input" placeholder="Cth: Al-Fatih / Genius / 5 Tahun" oninput="autoCapitalizeWords(this)">
         </div>
 
-        <button class="btn-primary" style="width:100%; padding:12px; font-size:14px; margin-top:10px;" onclick="saveInitialProfile()">Simpan Profil & Masuk</button>
+        <button class="btn-profile-submit" onclick="saveInitialProfile()">Simpan Profil & Masuk Semak</button>
     </div>
 </div>
 
@@ -668,50 +696,49 @@ button.btn-cancel {
     <div id="scheduleOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel">
             <div class="wide-panel-header">
-                <div class="wide-panel-title">🗓️ Tetapan Jadual & Subjek Mingguan</div>
+                <div class="wide-panel-title">🗓️ Tetapan Jadual Mingguan</div>
                 <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
             </div>
             
             <div style="margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: var(--border-radius-sm); border: 1px solid #e2e8f0;">
-                <label style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; display: block;">Pilih Hari Untuk Diubahsuai:</label>
-                <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" style="max-width: 300px; background: #ffffff; border: 1px solid #cbd5e1;">
+                <label style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; display: block;">Pilih Hari:</label>
+                <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" style="background: #ffffff; border: 1px solid #cbd5e1;">
                     <option value="Isnin">Isnin</option>
                     <option value="Selasa">Selasa</option>
                     <option value="Rabu">Rabu</option>
                     <option value="Khamis">Khamis</option>
                     <option value="Jumaat">Jumaat</option>
                 </select>
-                <span style="font-size: 12px; color: var(--text-secondary); margin-left: 10px; display: inline-block; vertical-align: middle;">*Sistem akan memuatkan jadual tadika secara automatik mengikut hari.</span>
             </div>
 
             <div class="horizontal-schedule-grid">
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 1</span>
-                    <div class="input-pair"><input id="masa1" value="8.00-8.30"><input id="subjek1" value="Aktiviti Fizikal"></div>
+                    <div class="input-pair"><input type="text" id="masa1" value="8.00-8.30"><input type="text" id="subjek1" value="Aktiviti Fizikal"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 2</span>
-                    <div class="input-pair"><input id="masa2" value="8.30-9.00"><input id="subjek2" value="Perbualan Awal"></div>
+                    <div class="input-pair"><input type="text" id="masa2" value="8.30-9.00"><input type="text" id="subjek2" value="Perbualan Awal"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 3</span>
-                    <div class="input-pair"><input id="masa3" value="9.00-9.30"><input id="subjek3" value="Bahasa Melayu"></div>
+                    <div class="input-pair"><input type="text" id="masa3" value="9.00-9.30"><input type="text" id="subjek3" value="Bahasa Melayu"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 4</span>
-                    <div class="input-pair"><input id="masa4" value="10.00-10.20"><input id="subjek4" value="Pend. Islam/Dhuha"></div>
+                    <div class="input-pair"><input type="text" id="masa4" value="10.00-10.20"><input type="text" id="subjek4" value="Pend. Islam/Dhuha"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 5</span>
-                    <div class="input-pair"><input id="masa5" value="10.20-10.50"><input id="subjek5" value="Matematik Awal"></div>
+                    <div class="input-pair"><input type="text" id="masa5" value="10.20-10.50"><input type="text" id="subjek5" value="Matematik Awal"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 6</span>
-                    <div class="input-pair"><input id="masa6" value="10.50-11.20"><input id="subjek6" value="Aktiviti Pembelajaran"></div>
+                    <div class="input-pair"><input type="text" id="masa6" value="10.50-11.20"><input type="text" id="subjek6" value="Aktiviti Pembelajaran"></div>
                 </div>
                 <div class="schedule-input-card">
                     <span class="slot-label">Slot 7</span>
-                    <div class="input-pair"><input id="masa7" value="11.20-11.50"><input id="subjek7" value="Aktiviti Pembelajaran"></div>
+                    <div class="input-pair"><input type="text" id="masa7" value="11.20-11.50"><input type="text" id="subjek7" value="Aktiviti Pembelajaran"></div>
                 </div>
             </div>
             <div class="wide-panel-actions">
@@ -720,7 +747,7 @@ button.btn-cancel {
         </div>
     </div>
 
-    <!-- 2. OVERLAY PANEL: SENARAI RPH UTAMA -->
+    <!-- 2. OVERLAY PANEL: SENARAI RPH TERSIMPAN -->
     <div id="rphOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel" style="max-width: 1100px;">
             <div class="wide-panel-header">
@@ -739,7 +766,7 @@ button.btn-cancel {
         </div>
     </div>
 
-    <!-- 3. MINI FLOATED OVERLAY: PILIHAN JENIS / HARI -->
+    <!-- 3. MINI OVERLAY PANEL: PAPARAN MOD LIHAT -->
     <div id="pilihanLihatOverlay" class="schedule-overlay-backdrop" style="z-index: 30000;">
         <div class="mini-overlay-panel">
             <h3 style="margin-top:0; font-size:18px; color:var(--text-primary);">Pilih Jenis Paparan</h3>
@@ -759,14 +786,14 @@ button.btn-cancel {
         </div>
     </div>
 
-    <!-- 4. FLOATED OVERLAY JADUAL BESAR (LIHAT / SUNTING) -->
+    <!-- 4. OVERLAY PANEL: BACA / EDIT RPH BESAR -->
     <div id="rphBesarOverlay" class="schedule-overlay-backdrop" style="z-index: 40000;">
-        <div class="rph-display-panel">
-            
-            <div class="rph-besar-header">
+        <div class="rph-display-panel" id="rphDisplayPanelMobileTarget">
+            <div class="rph-besar-header" id="rphBesarMobileHeaderControl">
                 <div class="header-left-group">
                     <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
                     <div class="header-buttons-group">
+                        <button id="btnMobileLandscapeTrigger" onclick="toggleForcedLandscapeMode()">📱 Mod Landscape Penuh</button>
                         <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
                     </div>
                 </div>
@@ -775,21 +802,21 @@ button.btn-cancel {
             
             <div id="floatedRphInjectArea"></div>
 
-            <div class="wide-panel-actions" style="margin-top:25px;">
+            <div class="wide-panel-actions" style="margin-top:25px;" id="rphBesarMobileFooterControl">
                 <button onclick="tutupRphBesarOverlay()">Tutup Skrin</button>
             </div>
         </div>
     </div>
 
-    <!-- DRAF UTAMA KELUAR DI BELAKANG APABILA KLIK 'JANA SEMINGGU' BARU -->
+    <!-- KAWASAN JANAAN RPH DRAF UTAMA KELUAR DI SINI -->
     <div id="weekRPH"></div>
 
-    <!-- FLOATING CONTROL BAR -->
+    <!-- FLOATING CONTROL BAR (STICKY BOTTOM) -->
     <div class="floated-menu-bar">
         <button onclick="changeProfileBtn()">Edit Profil</button>
-        <button class="btn-primary" id="btnJana" onclick="generateWeek()">Jana RPH Seminggu</button>
-        <button class="btn-save dynamic-action-btn" id="btnSimpan" onclick="simpanDanBukaUrusRPH()">💾 Simpan Data RPH</button>
-        <button class="btn-cancel dynamic-action-btn" id="btnBatal" onclick="cancelRPHGeneration()">❌ Batal Janaan</button>
+        <button class="btn-primary" id="btnJana" onclick="generateWeek()">Jana Seminggu</button>
+        <button class="btn-save dynamic-action-btn" id="btnSimpan" onclick="simpanDanBukaUrusRPH()">💾 Simpan</button>
+        <button class="btn-cancel dynamic-action-btn" id="btnBatal" onclick="cancelRPHGeneration()">❌ Batal</button>
     </div>
 
 </div>
@@ -936,16 +963,6 @@ function bukaRphBesarOverlay(mod) {
 
     const injectArea = document.getElementById("floatedRphInjectArea");
     injectArea.innerHTML = rphDipilih.htmlContent;
-    
-    const tables = injectArea.querySelectorAll('table');
-    tables.forEach(table => {
-        if (!table.parentElement.classList.contains('table-responsive')) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'table-responsive';
-            table.parentNode.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-        }
-    });
 
     const inputs = injectArea.querySelectorAll('.save-val');
     inputs.forEach(input => {
@@ -979,7 +996,27 @@ function bukaRphBesarOverlay(mod) {
 }
 
 function tutupRphBesarOverlay() {
+    // Matikan mod landscape sekiranya aktif sebelum menutup paparan utama
+    const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
+    if(panelMobile.classList.contains("forced-landscape-active")) { toggleForcedLandscapeMode(); }
+    
     document.getElementById("rphBesarOverlay").classList.remove("active");
+}
+
+// 🔥 FUNGSI UTAMA: LOGIK PUSINGAN VISUAL LANDSCAPE UNTUK MOBILE VIEW
+function toggleForcedLandscapeMode() {
+    const panelMobile = document.getElementById("rphDisplayPanelMobileTarget");
+    const butangSuis = document.getElementById("btnMobileLandscapeTrigger");
+    
+    if(!panelMobile.classList.contains("forced-landscape-active")) {
+        panelMobile.classList.add("forced-landscape-active");
+        butangSuis.innerText = "🔄 Tutup Mod Landscape";
+        butangSuis.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
+    } else {
+        panelMobile.classList.remove("forced-landscape-active");
+        butangSuis.innerText = "📱 Mod Landscape Penuh";
+        butangSuis.style.background = "linear-gradient(135deg, #9c88ff, #786fa6)";
+    }
 }
 
 function simpanDataDariFloatedOverlay() {
@@ -1033,9 +1070,9 @@ function generateWeek(){
 
         content += `
         <div class="floating-card print-block" data-day="${hariIni}" id="rph-card-${hariIni}">
-            <div class="main-title" style="font-size: 20px; text-align: left; margin-bottom: 20px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${hariIni})</div>
+            <div class="main-title" style="font-size: 18px; text-align: left; margin-bottom: 15px; color: var(--text-primary); padding:0;">Rancangan Pengajaran Harian (${hariIni})</div>
             <div class="meta-grid">
-                <div class="meta-cell"><span class="meta-label">Minggu</span><input type="text" class="save-val" id="mw-${d}" placeholder="Masukkan Minggu"></div>
+                <div class="meta-cell"><span class="meta-label">Minggu</span><input type="text" class="save-val" id="mw-${d}" placeholder="Minggu"></div>
                 <div class="meta-cell"><span class="meta-label">Hari</span><input type="text" value="${hariIni}" readonly style="font-weight:700; color:var(--primary-color);"></div>
                 <div class="meta-cell"><span class="meta-label">Kehadiran</span><input type="text" class="save-val" id="kh-${d}" placeholder="Cth: 24/25"></div>
                 <div class="meta-cell"><span class="meta-label">Tarikh</span><input type="date" class="save-val" id="tr-${d}"></div>
@@ -1056,19 +1093,19 @@ function generateWeek(){
                         <tr>
                             <td class="slot-id-${num}">${jadualHariIni[num-1][0]}<br><span style="color:var(--text-secondary); font-size:12px; font-weight:500;">${jadualHariIni[num-1][1]}</span></td>
                             <td>
-                                <textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <textarea class="save-val" id="sp-${d}-${num}" placeholder="Taip standard pembelajaran..."></textarea>
                             </td>
                             <td>
-                                <textarea class="save-val" id="op-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <textarea class="save-val" id="op-${d}-${num}" placeholder="Taip objektif pembelajaran..."></textarea>
                             </td>
                             <td>
-                                <textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <textarea class="save-val" id="ak-${d}-${num}" placeholder="Taip aktiviti pengajaran..."></textarea>
                             </td>
                             <td>
-                                <textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip di sini..."></textarea>
+                                <textarea class="save-val" id="ct-${d}-${num}" placeholder="Taip nota atau catatan..."></textarea>
                             </td>
                         </tr>
-                        ${num === 3 ? '<tr class="yellow-row"><td colspan="5">9.30 – 10.00 REHAT</td></tr>' : ''}
+                        ${num === 3 ? '<br class="mobile-break"><tr class="yellow-row"><td colspan="5">9.30 – 10.00 REHAT</td></tr>' : ''}
                         `).join('')}
                         <tr class="yellow-row"><td colspan="5">11.50 – 12.00 PENUTUP</td></tr>
                     </tbody>
@@ -1140,7 +1177,7 @@ function kemaskiniSenaraiOverlayRPH() {
                         <span style="font-weight: 700; color: #2c3e50;">RPH Minggu: ${item.meta.minggu} (${item.meta.guru} - ${item.meta.kelas || semasaKelas})</span>
                         <span style="font-size: 13px; color: #e74c3c; font-weight:600;">📅 ${item.meta.mula} hingga ${item.meta.akhir}</span>
                     </div>
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display: flex; gap: 8px; margin-top: 5px;">
                         <button class="btn-primary" style="padding: 8px 15px; font-size:12px;" onclick="bukaPilihanLihatOverlay('${item.id}')">Lihat / Sunting</button>
                         <button class="btn-cancel" style="padding: 8px 12px; font-size:12px; background:#e74c3c;" onclick="padamRekodRph('${item.id}')">🗑️</button>
                     </div>
@@ -1172,7 +1209,6 @@ function cancelRPHGeneration() {
     }
 }
 
-// Logik menolak tinggi baris input secara dinamik mengikut panjang teks ditaip
 document.addEventListener("input", function(e){
     if(e.target.tagName.toLowerCase() === "textarea"){
         e.target.style.height = "auto";
