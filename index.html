@@ -230,6 +230,7 @@ body {
 .btn-trigger-jadual {
     background: linear-gradient(135deg, #74b9ff, #0984e3);
     box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2);
+    color: black !important; /* Memaksa tulisan menjadi warna hitam */
 }
 
 .btn-trigger-rph {
@@ -659,7 +660,33 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
         font-size: 11px;
     }
 }
+
+/* --- NAIK TARAF PAPARAN JADUAL MODEN (VERSI SEIMBANG) --- */
+.modern-select-container { background: linear-gradient(135deg, #ffffff, #f8fafc); padding: 15px 20px; border-radius: 16px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid #eef2f5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.modern-select { padding: 10px 16px; border-radius: 12px; border: 2px solid #eef2f5; font-size: 14px; font-weight: 800; color: #2c3e50; outline: none; cursor: pointer; background-color: #ffffff; transition: all 0.3s; min-width: 180px; }
+.modern-select:focus { border-color: #0984e3; box-shadow: 0 0 0 4px rgba(9, 132, 227, 0.1); }
+
+/* Susunan 4 kolum tapi dengan ruang yang lebih selesa */
+.horizontal-schedule-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 5px; }
+
+.modern-card { background: #ffffff; border: none !important; border-radius: 18px; padding: 18px 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.modern-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+.modern-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #ff7675, #ffeaa7); }
+.slot-badge { display: inline-block; background: #fff0f0; color: #ff7675; padding: 5px 12px; border-radius: 12px; font-size: 12px; font-weight: 800; margin-bottom: 12px; letter-spacing: 0.5px; }
+
+.modern-input-group { position: relative; margin-bottom: 10px; }
+.modern-input-group:last-child { margin-bottom: 0; }
+.modern-input-group input { width: 100%; padding: 10px 10px 10px 35px !important; border: 2px solid #f1f2f6 !important; background: #f8fafc !important; border-radius: 12px !important; font-weight: 700 !important; font-size: 13px !important; color: #2d3436 !important; transition: all 0.2s !important; box-sizing: border-box !important; }
+.modern-input-group input:focus { background: #ffffff !important; border-color: #74b9ff !important; }
+.modern-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
+
+@media (max-width: 900px) { .horizontal-schedule-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .horizontal-schedule-grid { grid-template-columns: 1fr; } }
+
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -702,14 +729,20 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
     <!-- 1. OVERLAY PANEL: URUS JADUAL & SUBJEK -->
     <div id="scheduleOverlay" class="schedule-overlay-backdrop">
         <div class="wide-schedule-panel">
-            <div class="wide-panel-header">
-                <div class="wide-panel-title">🗓️ Tetapan Jadual Mingguan</div>
-                <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
-            </div>
+           <div class="wide-panel-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f2f6; padding-bottom: 12px; margin-bottom: 15px;">
+    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+        <div class="wide-panel-title" style="margin: 0;">🗓️ Tetapan Jadual Mingguan</div>
+        <button class="btn-primary" style="padding: 8px 18px; font-size: 13px; font-weight: 700; border-radius: 20px; background: linear-gradient(135deg, #00cec9, #0984e3); box-shadow: 0 4px 10px rgba(9, 132, 227, 0.2); border: none; cursor: pointer;" onclick="updateJadual()">💾 Save</button>
+    </div>
+    <div class="wide-panel-close" onclick="closeScheduleOverlay()">&times;</div>
+</div>
             
-            <div style="margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: var(--border-radius-sm); border: 1px solid #e2e8f0;">
-                <label style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; display: block;">Pilih Hari:</label>
-                <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" style="background: #ffffff; border: 1px solid #cbd5e1;">
+            <div class="modern-select-container">
+                <div>
+                    <label style="font-weight: 800; font-size: 15px; color: var(--primary-color); display: block; margin-bottom: 4px;">📅 Tetapan Hari Beroperasi</label>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">Pilih hari untuk mengubah waktu dan subjek.</p>
+                </div>
+                <select id="hariPilihanJadual" onchange="loadJadualEditBerdasarkanHari()" class="modern-select">
                     <option value="Isnin">Isnin</option>
                     <option value="Selasa">Selasa</option>
                     <option value="Rabu">Rabu</option>
@@ -719,38 +752,91 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
             </div>
 
             <div class="horizontal-schedule-grid">
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 1</span>
-                    <div class="input-pair"><input type="text" id="masa1" value="8.00-8.30"><input type="text" id="subjek1" value="Aktiviti Fizikal"></div>
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 1</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa1" value="8.00-8.30">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek1" value="Aktiviti Fizikal">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 2</span>
-                    <div class="input-pair"><input type="text" id="masa2" value="8.30-9.00"><input type="text" id="subjek2" value="Perbualan Awal"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 2</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa2" value="8.30-9.00">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek2" value="Perbualan Awal">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 3</span>
-                    <div class="input-pair"><input type="text" id="masa3" value="9.00-9.30"><input type="text" id="subjek3" value="Bahasa Melayu"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 3</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa3" value="9.00-9.30">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek3" value="Baca Bersama">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 4</span>
-                    <div class="input-pair"><input type="text" id="masa4" value="10.00-10.20"><input type="text" id="subjek4" value="Pend. Islam/Dhuha"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 4</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa4" value="10.00-10.20">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek4" value="Pend. Islam/Dhuha">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 5</span>
-                    <div class="input-pair"><input type="text" id="masa5" value="10.20-10.50"><input type="text" id="subjek5" value="Matematik Awal"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 5</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa5" value="10.20-10.50">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek5" value="Matematik Awal">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 6</span>
-                    <div class="input-pair"><input type="text" id="masa6" value="10.50-11.20"><input type="text" id="subjek6" value="Aktiviti Pembelajaran"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 6</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa6" value="10.50-11.20">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek6" value="Aktiviti Pembelajaran">
+                    </div>
                 </div>
-                <div class="schedule-input-card">
-                    <span class="slot-label">Slot 7</span>
-                    <div class="input-pair"><input type="text" id="masa7" value="11.20-11.50"><input type="text" id="subjek7" value="Aktiviti Pembelajaran"></div>
+
+                <div class="schedule-input-card modern-card">
+                    <span class="slot-badge">✨ SLOT 7</span>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">🕒</span>
+                        <input type="text" id="masa7" value="11.20-11.50">
+                    </div>
+                    <div class="modern-input-group">
+                        <span class="modern-icon">📚</span>
+                        <input type="text" id="subjek7" value="Aktiviti Pembelajaran">
+                    </div>
                 </div>
             </div>
-            <div class="wide-panel-actions">
-                <button class="btn-primary" onclick="updateJadual()">Kemas Kini Hari Ini</button>
-            </div>
+
         </div>
     </div>
 
@@ -800,8 +886,10 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
                 <div class="header-left-group">
                     <div class="wide-panel-title" id="rphBesarHeaderTitle">📝 Paparan Data Pengajaran</div>
                     <div class="header-buttons-group">
-                        <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
-                    </div>
+    <button class="btn-save" style="padding: 10px 14px;" onclick="simpanDataDariFloatedOverlay()">💾 Simpan Perubahan</button>
+    <button class="btn-primary" style="padding: 10px 14px; background: #e17055;" onclick="muatTurunPDF()">📄 Muat Turun PDF</button>
+    <button class="btn-primary" style="padding: 10px 14px; background: #00cec9;" onclick="kongsiPDF()">📤 Kongsi PDF</button>
+</div>
                 </div>
                 <div class="wide-panel-close" onclick="tutupRphBesarOverlay()">&times;</div>
             </div>
@@ -829,7 +917,7 @@ button.btn-cancel { background: #d63031; border: none; color: #ffffff; }
 
 <script>
 let pangkalanJadualInduk = {
-    "Isnin":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
+    "Isnin":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Baca Bersama"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
     "Selasa":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Bahasa Melayu"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Matematik Awal"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
     "Rabu":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","English"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Sains"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
     "Khamis":[["8.00-8.30","Aktiviti Fizikal"],["8.30-9.00","Perbualan Awal"],["9.00-9.30","Matematik Awal"],["10.00-10.20","Pend. Islam/Dhuha"],["10.20-10.50","Bahasa Melayu"],["10.50-11.20","Aktiviti Pembelajaran"],["11.20-11.50","Aktiviti Pembelajaran"]],
@@ -853,8 +941,10 @@ window.onload = function() {
         document.getElementById("profileScreen").style.display = "flex";
     }
 
-    const savedJadualInduk = localStorage.getItem("pangkalanJadualInduk");
-    if (savedJadualInduk) {
+// Kod pencuci memori lama
+    localStorage.removeItem("pangkalanJadualInduk");
+    
+    const savedJadualInduk = localStorage.getItem("pangkalanJadualInduk");    if (savedJadualInduk) {
         pangkalanJadualInduk = JSON.parse(savedJadualInduk);
     } else {
         localStorage.setItem("pangkalanJadualInduk", JSON.stringify(pangkalanJadualInduk));
@@ -1046,6 +1136,108 @@ function updateJadual(){
     alert("Jadual bagi hari " + hariDipilih + " berjaya disimpan!");
 }
 
+// ==========================================
+// FUNGSI MUAT TURUN & KONGSI PDF (VERSI MUKTAMAD - ADA DELAY REPAINT)
+// ==========================================
+
+async function janaPDFProses(isShare = false) {
+    const backdrop = document.getElementById('rphBesarOverlay');
+    const panel = document.querySelector('.rph-display-panel');
+    const element = document.getElementById('floatedRphInjectArea');
+    const fileName = `RPH_Kelas_${semasaKelas}.pdf`;
+
+    // 1. SIMPAN GAYA CSS ASAL (Supaya mudah dikembalikan tanpa ralat)
+    const origBackdropStyle = backdrop.getAttribute('style') || '';
+    const origPanelStyle = panel.getAttribute('style') || '';
+
+    // 2. TUKAR TEXTAREA KEPADA TEKS BIASA (Elak teks terpotong)
+    const textareas = element.querySelectorAll('textarea');
+    textareas.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'temp-pdf-text';
+        div.style.width = '100%';
+        div.style.minHeight = (t.scrollHeight > 80 ? t.scrollHeight : 80) + 'px';
+        div.style.padding = '10px 12px';
+        div.style.boxSizing = 'border-box';
+        div.style.fontSize = '13px';
+        div.style.fontFamily = 'inherit';
+        div.style.backgroundColor = '#eef2f5';
+        div.style.borderRadius = '10px';
+        div.style.color = '#2c3e50';
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.wordBreak = 'break-word';
+        div.style.overflowWrap = 'break-word';
+        
+        div.innerText = t.value;
+        t.parentNode.insertBefore(div, t);
+        t.style.display = 'none'; 
+    });
+
+    // 3. HAPUSKAN EFEK POP-UP SEMENTARA WAKTU
+    // Paksa jadual bermula dari penjuru atas kiri (0,0) tanpa sebarang halangan scroll
+    backdrop.style.cssText = 'position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: auto !important; display: block !important; background: white !important; padding: 0 !important; z-index: 99999 !important; overflow: visible !important;';
+    
+    panel.style.cssText = 'max-height: none !important; overflow: visible !important; transform: none !important; width: 1200px !important; max-width: none !important; margin: 0 !important; box-shadow: none !important; padding: 20px !important;';
+
+    window.scrollTo(0, 0); // Paksa skrol ke atas
+
+    // 4. KUNCI UTAMA: Beri masa 0.5 saat untuk browser "melukis" jadual sebelum tangkap PDF
+    alert("Sistem sedang menyusun jadual untuk cetakan, sila tunggu sekejap...");
+    await new Promise(resolve => setTimeout(resolve, 500)); 
+
+    // 5. TETAPAN PDF (Format Melintang)
+    const opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     fileName,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { 
+            scale: 2, 
+            useCORS: true,
+            scrollY: 0,
+            scrollX: 0
+        },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    // 6. MULA JANA PDF
+    try {
+        if(isShare) {
+            const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
+            const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+
+            if (navigator.share && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    title: 'Rancangan Pengajaran Harian',
+                    text: 'Berikut adalah lampiran RPH dari sistem.',
+                    files: [file]
+                });
+            } else {
+                alert('Peranti/Browser tidak menyokong fungsi Share. Fail dimuat turun automatik.');
+                await html2pdf().set(opt).from(element).save(); 
+            }
+        } else {
+            await html2pdf().set(opt).from(element).save();
+        }
+    } catch (error) {
+        console.error('Ralat PDF:', error);
+        alert('Berlaku ralat semasa proses PDF, sila cuba lagi.');
+    } finally {
+        // 7. KEMBALIKAN SEMUANYA KEPADA ASAL
+        // Selepas siap, kembalikan gaya pop-up asal
+        backdrop.setAttribute('style', origBackdropStyle);
+        panel.setAttribute('style', origPanelStyle);
+
+        // Pulihkan textarea
+        textareas.forEach(t => { t.style.display = ''; });
+        const tempDivs = element.querySelectorAll('.temp-pdf-text');
+        tempDivs.forEach(d => { d.remove(); });
+    }
+}
+
+// Kekalkan pemanggil fungsi ini
+function muatTurunPDF() { janaPDFProses(false); }
+function kongsiPDF() { janaPDFProses(true); }
+
 function generateWeek(){
     let days = ["Isnin","Selasa","Rabu","Khamis","Jumaat"];
     let content = "";
@@ -1209,10 +1401,57 @@ function cancelRPHGeneration() {
     }
 }
 
+// ==========================================
+// FUNGSI AUTO-SAVE (SIMPAN SENYAP-SENYAP)
+// ==========================================
+
+// Fungsi memproses simpanan ke dalam memori tanpa Pop-up Alert
+function autoSimpanRphSediaAda() {
+    if (!idRphAktif) return; // Hanya jalan jika sedang buka fail RPH sedia ada
+    
+    const injectArea = document.getElementById("floatedRphInjectArea");
+    const inputs = injectArea.querySelectorAll('.save-val');
+    
+    let senaraiRph = JSON.parse(localStorage.getItem("senarai_rph_master")) || [];
+    let rphIndex = senaraiRph.findIndex(item => item.id === idRphAktif);
+
+    if (rphIndex !== -1) {
+        if (!senaraiRph[rphIndex].inputData) senaraiRph[rphIndex].inputData = {};
+        
+        // Simpan semua teks yang ditaip
+        inputs.forEach(input => {
+            senaraiRph[rphIndex].inputData[input.id] = input.value;
+        });
+
+        // Simpan juga tarikh dan minggu jika ada perubahan
+        const tMula = injectArea.querySelector("#tr-0") ? injectArea.querySelector("#tr-0").value : senaraiRph[rphIndex].meta.mula;
+        const tAkhir = injectArea.querySelector("#tr-4") ? injectArea.querySelector("#tr-4").value : senaraiRph[rphIndex].meta.akhir;
+        const infoMinggu = injectArea.querySelector("#mw-0") ? injectArea.querySelector("#mw-0").value : senaraiRph[rphIndex].meta.minggu;
+
+        senaraiRph[rphIndex].meta.mula = tMula;
+        senaraiRph[rphIndex].meta.akhir = tAkhir;
+        senaraiRph[rphIndex].meta.minggu = infoMinggu;
+
+        // Simpan terus ke pangkalan data memori (localStorage)
+        localStorage.setItem("senarai_rph_master", JSON.stringify(senaraiRph));
+    }
+}
+
+// Pengesan Taipan (Setiap huruf ditekan akan terus di-save)
 document.addEventListener("input", function(e){
+    // 1. Besarkan kotak automatik bila teks panjang
     if(e.target.tagName.toLowerCase() === "textarea"){
         e.target.style.height = "auto";
         e.target.style.height = (e.target.scrollHeight) + "px";
+    }
+    
+    // 2. Sistem Auto-Save bertindak
+    if(e.target.classList.contains("save-val")) {
+        const rphOverlay = document.getElementById("rphBesarOverlay");
+        // Jika sedang edit RPH tersimpan, jalankan auto-save
+        if(rphOverlay && rphOverlay.classList.contains("active") && idRphAktif) {
+            autoSimpanRphSediaAda();
+        }
     }
 });
 </script>
